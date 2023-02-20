@@ -1,5 +1,5 @@
 import { ArchwayClient } from '@archwayhq/arch3.js';
-import { RPC_URL } from './config';
+import { NETWORK } from './config';
 import { Collection } from './models';
 require('dotenv').config();
 
@@ -7,7 +7,7 @@ export const COLLECTION_CONTRACT_ADDR="archway1escrsledtwml55h23q6mewy52klrpl6ck
 
 export const getAllCollections = async () :Promise<Collection[]> =>{
 
-    const client = await ArchwayClient.connect(RPC_URL);
+    const client = await ArchwayClient.connect(NETWORK.endpoint);
 
     const contractAddress = COLLECTION_CONTRACT_ADDR;
 
