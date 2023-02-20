@@ -5,15 +5,15 @@ import { Collection } from './models';
 import { COLLECTION_CONTRACT_ADDR } from './query';
 require('dotenv').config();
 
+let defaultSigningClientOptions : any =  { gasPrice: `0.005${DENOM}` };
+
 export const createCollection = async (collection : Collection) =>{
 
     const wallet_param = {
         mnemonic: process.env.WALLET_MNEMONIC,
         address: process.env.WALLET_ADDRESS,
     };
-
-    let defaultSigningClientOptions : any =  { gasPrice: `0.005${DENOM}` };
-
+   
     const wallet = await DirectSecp256k1HdWallet.fromMnemonic(wallet_param.mnemonic, { prefix: NETWORK.prefix });
     const client = await SigningArchwayClient.connectWithSigner(NETWORK.endpoint, wallet, {
         ...defaultSigningClientOptions,
