@@ -12,7 +12,7 @@ export const createCollection = async (collection : Collection) =>{
         address: process.env.WALLET_ADDRESS,
     };
 
-    let defaultSigningClientOptions : any =  { gas: `0.005${DENOM}` };
+    let defaultSigningClientOptions : any =  { gasPrice: `0.005${DENOM}` };
 
     const wallet = await DirectSecp256k1HdWallet.fromMnemonic(wallet_param.mnemonic, { prefix: NETWORK.prefix });
     const client = await SigningArchwayClient.connectWithSigner(NETWORK.endpoint, wallet, {
