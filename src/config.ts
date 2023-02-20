@@ -3,3 +3,5 @@ export const NETWORK = {
     endpoint: "https://rpc.constantine-1.archway.tech",
     prefix: 'archway',
 };
+
+export const DENOM ="uconst";

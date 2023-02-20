@@ -1,6 +1,6 @@
 import { SigningArchwayClient } from '@archwayhq/arch3.js';
 import { DirectSecp256k1HdWallet } from '@cosmjs/proto-signing';
-import { NETWORK } from './config';
+import { NETWORK, DENOM } from './config';
 import { Collection } from './models';
 import { COLLECTION_CONTRACT_ADDR } from './query';
 require('dotenv').config();
@@ -8,12 +8,11 @@ require('dotenv').config();
 export const createCollection = async (collection : Collection) =>{
 
     const wallet_param = {
-    // This is an incomplete mnemonic used for demo purposes only. Please, never hard code your seed phrases.
         mnemonic: process.env.WALLET_MNEMONIC,
-        address0: process.env.WALLET_ADDRESS,
+        address: process.env.WALLET_ADDRESS,
     };
 
-    let defaultSigningClientOptions : any = "";
+    let defaultSigningClientOptions : any =  { gas: `0.005${DENOM}` };
 
     const wallet = await DirectSecp256k1HdWallet.fromMnemonic(wallet_param.mnemonic, { prefix: NETWORK.prefix });
     const client = await SigningArchwayClient.connectWithSigner(NETWORK.endpoint, wallet, {
@@ -26,7 +25,7 @@ export const createCollection = async (collection : Collection) =>{
         create_collection: {name : collection.name, symbol: collection.symbol},
     };
     const { transactionHash } = await client.execute(
-        wallet_param.address0,
+        wallet_param.address,
         contractAddress,
         msg,
         'auto'

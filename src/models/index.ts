@@ -1,6 +1,6 @@
 export interface Collection {
 
-    owner : string,
+    owner? : string,
 
     name : string ,
 
@@ -10,11 +10,11 @@ export interface Collection {
 
     treasuries?: Treasury[],
 
-    contract_instantiated : Boolean,
+    contract_instantiated? : Boolean,
 
-    date_created : number,
+    date_created? : number,
 
-    date_updated : number,
+    date_updated? : number,
 }
 
 
