@@ -3,7 +3,7 @@ import { RPC_URL } from './config';
 import { Collection } from './models';
 require('dotenv').config();
 
-const COLLECTION_CONTRACT_ADDR = process.env.COLLECTION_CONTRACT_ADDR;
+export const COLLECTION_CONTRACT_ADDR="archway1escrsledtwml55h23q6mewy52klrpl6ckktzucjg8qtefgmlrzfsp383uz";
 
 export const getAllCollections = async () :Promise<Collection[]> =>{
 
