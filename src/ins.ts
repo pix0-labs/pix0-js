@@ -9,28 +9,35 @@ let defaultSigningClientOptions : any =  { gasPrice: `0.005${DENOM}` };
 
 export const createCollection = async (collection : Collection) =>{
 
-    const wallet_param = {
-        mnemonic: process.env.WALLET_MNEMONIC,
-        address: process.env.WALLET_ADDRESS,
-    };
-   
-    const wallet = await DirectSecp256k1HdWallet.fromMnemonic(wallet_param.mnemonic, { prefix: NETWORK.prefix });
-    const client = await SigningArchwayClient.connectWithSigner(NETWORK.endpoint, wallet, {
-        ...defaultSigningClientOptions,
-        prefix: NETWORK.prefix,
-    });
+    try {
 
-    const contractAddress = COLLECTION_CONTRACT_ADDR;
-    const msg = {
-        create_collection: {name : collection.name, symbol: collection.symbol},
-    };
-    const { transactionHash } = await client.execute(
-        wallet_param.address,
-        contractAddress,
-        msg,
-        'auto'
-    );
+        const wallet_param = {
+            mnemonic: process.env.WALLET_MNEMONIC,
+            address: process.env.WALLET_ADDRESS,
+        };
+       
+        const wallet = await DirectSecp256k1HdWallet.fromMnemonic(wallet_param.mnemonic, { prefix: NETWORK.prefix });
+        const client = await SigningArchwayClient.connectWithSigner(NETWORK.endpoint, wallet, {
+            ...defaultSigningClientOptions,
+            prefix: NETWORK.prefix,
+        });
+    
+        const contractAddress = COLLECTION_CONTRACT_ADDR;
+        const msg = {
+            create_collection: {name : collection.name, symbol: collection.symbol},
+        };
+        const { transactionHash } = await client.execute(
+            wallet_param.address,
+            contractAddress,
+            msg,
+            'auto'
+        );
+    
+        console.log("tx.hash::", transactionHash);
+    
+    }
+    catch(e : any) {
 
-    console.log("tx.hash::", transactionHash);
-
+        console.error("Error@createCollection\n", e.message);
+    }
 }
