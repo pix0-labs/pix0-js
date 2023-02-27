@@ -14,5 +14,10 @@
     "@cosmjs/proto-signing": "^0.29.5",
     "@cosmjs/stargate": "^0.29.5",
     "dotenv": "^16.0.3"
+  },
+  "scripts": {
+    "build": "yarn run clean && yarn run compile",
+    "clean": "rm -rf dist",
+    "compile": "tsc"
   }
 }
