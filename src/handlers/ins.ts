@@ -1,7 +1,6 @@
 import { SigningArchwayClient } from '@archwayhq/arch3.js';
 import { DirectSecp256k1HdWallet, DirectSecp256k1HdWalletOptions } from '@cosmjs/proto-signing';
-import { NETWORK, DENOM , COINS_MINIMAL_DENOM} from '../config';
-import { GasPrice } from "@cosmjs/stargate";
+import { NETWORK, DENOM} from '../config';
 import { Collection } from '../models';
 import { COLLECTION_CONTRACT_ADDR } from '../config';
 

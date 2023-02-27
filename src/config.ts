@@ -4,9 +4,9 @@ export const NETWORK = {
     prefix: 'archway',
 };
 
-export const DENOM ="const";
+export const DENOM ="uconst";
 
 export const COINS_MINIMAL_DENOM = "uconst"; 
 
-export const COLLECTION_CONTRACT_ADDR="archway1escrsledtwml55h23q6mewy52klrpl6ckktzucjg8qtefgmlrzfsp383uz";
+export const COLLECTION_CONTRACT_ADDR="archway1m7qff25r5ydgz5utg5s5p4t2lx9zqeztuw2k6gv8mhsetyye4wlsxcq3rt";
 
