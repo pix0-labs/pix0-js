@@ -1,3 +1,24 @@
+export interface Attribute {
+
+    name : string,
+
+    value : string, 
+}
+
+export interface PriceType {
+
+    price_type : number , 
+
+    value : number , 
+
+    denom? : string, 
+
+    date_start? : number,
+
+    date_end? : number,  
+}
+
+
 export interface Collection {
 
     owner? : string,
@@ -10,7 +31,11 @@ export interface Collection {
 
     treasuries?: Treasury[],
 
-    contract_instantiated? : Boolean,
+    attributes? : Attribute[],
+
+    prices? : PriceType[],
+
+    status?: number, 
 
     date_created? : number,
 
@@ -26,3 +51,14 @@ export interface Treasury {
 
     name? : string, 
 }
+
+
+export interface Link {
+
+    link_type : number,
+
+    value : string, 
+}
+
+
+

@@ -5,3 +5,6 @@ export const NETWORK = {
 };
 
 export const DENOM ="uconst";
+
+export const COLLECTION_CONTRACT_ADDR="archway1escrsledtwml55h23q6mewy52klrpl6ckktzucjg8qtefgmlrzfsp383uz";
+

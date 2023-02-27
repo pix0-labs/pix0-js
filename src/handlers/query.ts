@@ -1,9 +1,7 @@
 import { ArchwayClient } from '@archwayhq/arch3.js';
-import { NETWORK } from './config';
-import { Collection } from './models';
+import { NETWORK , COLLECTION_CONTRACT_ADDR} from '../config';
+import { Collection } from '../models';
 require('dotenv').config();
-
-export const COLLECTION_CONTRACT_ADDR="archway1escrsledtwml55h23q6mewy52klrpl6ckktzucjg8qtefgmlrzfsp383uz";
 
 export const getAllCollections = async () :Promise<Collection[]> =>{
 
