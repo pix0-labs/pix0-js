@@ -4,7 +4,7 @@ require('dotenv').config();
 
 export interface Wallet {
 
-    mnemomic : string, 
+    mnemonic : string, 
     address : string, 
 }
 
@@ -24,5 +24,5 @@ export const extractWallet = () : Wallet|undefined =>{
 
 export const extractWalletFromEnv = () : Wallet =>{
 
-    return { mnemomic : process.env.WALLET_MNEMONIC, address : process.env.WALLET_ADDRESS};
+    return { mnemonic : process.env.WALLET_MNEMONIC, address : process.env.WALLET_ADDRESS};
 }
