@@ -23,7 +23,7 @@ async function loopCreateItems() {
 
     for ( var r= 0; r < images.length; r++){
 
-        let name = `TNFT Item #00${r}`;
+        let name = `TNFT2 Item #00${r}`;
         let desc = `Test NFT Item #00${r} with beautiful image`;
 
         let links = [{
@@ -33,8 +33,8 @@ async function loopCreateItems() {
 
         let tx = await createItem({
             name : name,
-            collection_name : "Test NFT Collection 1",
-            collection_symbol: "TNFT",
+            collection_name : "Test NFT Collection 2",
+            collection_symbol: "TNFT2",
             collection_owner : wallet.address,
             description : desc,
             links: links,

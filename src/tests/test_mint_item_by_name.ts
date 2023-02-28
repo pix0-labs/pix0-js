@@ -11,8 +11,8 @@ async function mint() {
 
     let tx = await mintItemByName({
         collection_owner: "archway12pcytur9del2t5wm93t8kuqakvf9yk9wzt4w0x", 
-        collection_name: "Test NFT Collection 1",
-        collection_symbol: "TNFT"
+        collection_name: "Test NFT Collection 2",
+        collection_symbol: "TNFT2"
     }, "Item #002", await walletFromMnemonic(wallet.mnemonic), wallet.address);
 
     console.log("Item.minted.result::", tx);

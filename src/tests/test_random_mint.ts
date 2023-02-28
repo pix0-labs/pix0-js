@@ -12,8 +12,8 @@ async function randomMint() {
 
     let tx = await randomMintItem({
         collection_owner: "archway12pcytur9del2t5wm93t8kuqakvf9yk9wzt4w0x", 
-        collection_name: "Test NFT Collection 1",
-        collection_symbol: "TNFT"
+        collection_name: "Test NFT Collection 2",
+        collection_symbol: "TNFT2"
     }, 1000000000, await walletFromMnemonic(wallet.mnemonic), wallet.address);
 
     if (tx instanceof Error){

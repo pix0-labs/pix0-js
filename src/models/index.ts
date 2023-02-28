@@ -28,6 +28,16 @@ export interface CollectionId {
 
 }
 
+
+
+export const COLLECTION_STATUS_DRAFT : number = 0;
+
+export const COLLECTION_STATUS_ACTIVATED : number = 1;
+
+export const COLLECTION_STATUS_DEACTIVATED : number = 2;
+
+
+
 export interface Collection {
 
     owner? : string,
