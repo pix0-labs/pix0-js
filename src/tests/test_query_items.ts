@@ -1,6 +1,13 @@
 // npx ts-node src/tests/test_query_items.ts
-import { getItems } from "../handlers/query";
+import { getItems, getItemsCount } from "../handlers/query";
 
-getItems("archway12pcytur9del2t5wm93t8kuqakvf9yk9wzt4w0x", "Test NFT Collection 1", "TNFT").then(c=>{
-    console.log("Items In Collections::",c);
+getItemsCount("archway12pcytur9del2t5wm93t8kuqakvf9yk9wzt4w0x", "Test NFT Collection 1", "TNFT").then(c=>{
+    console.log("Number of Items In Collections::", c);
+})
+
+getItems("archway12pcytur9del2t5wm93t8kuqakvf9yk9wzt4w0x", "Test NFT Collection 1", "TNFT").then(itms=>{
+    console.log("Items In Collections::");
+    itms.forEach((i,idx)=>{
+        console.log(idx, "Item:::", i);
+    })
 })
