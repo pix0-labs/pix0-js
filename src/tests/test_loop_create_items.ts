@@ -39,7 +39,7 @@ async function loopCreateItems() {
             description : desc,
             links: links,
             traits: [],
-        }, await walletFromMnemonic(wallet.mnemonic), wallet.address)
+        }, await walletFromMnemonic(wallet.mnemonic), wallet.address);
 
         if (tx instanceof Error){
 

@@ -102,7 +102,7 @@ export const randomMintItem = async (collection_id : CollectionId,
             let idx = randomNumber(0, (cnt - 1));
 
             const msg = {
-                mint_item: {index: idx, owner: collection_id.collection_owner,
+                mint_item: {index: `${idx}`, owner: collection_id.collection_owner,
                 collection_name : collection_id.collection_name, collection_symbol : collection_id.collection_symbol },
             };
     
