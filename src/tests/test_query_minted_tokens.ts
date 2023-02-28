@@ -1,11 +1,14 @@
 // npx ts-node src/tests/test_query_minted_tokens.ts
 import { getMintedTokensByOwner, getNftTokenInfo } from "../handlers/query";
+import { extractWallet } from "../utils";
 
 mintedTokens();
 
 async function mintedTokens() {
 
-    getMintedTokensByOwner("archway12pcytur9del2t5wm93t8kuqakvf9yk9wzt4w0x").then(toks=>{
+    let wallet = extractWallet();
+
+    getMintedTokensByOwner(wallet.address).then(toks=>{
    
         toks.forEach(async (t,i)=>{
             
