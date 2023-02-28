@@ -84,12 +84,15 @@ export const createItem = async (item : Item , wallet : DirectSecp256k1HdWallet,
 
 
 export const randomMintItem = async (collection_id : CollectionId, 
+    price : number, 
     wallet : DirectSecp256k1HdWallet, walletAddress : string ) : Promise<string|Error> =>{
 
     try {
 
+        let gas : any = { gasPrice: `${price}${DENOM}` };
+
         const client = await SigningArchwayClient.connectWithSigner(NETWORK.endpoint, wallet, {
-            ...defaultSigningClientOptions,
+            ...gas,
             prefix: NETWORK.prefix,
         });
     

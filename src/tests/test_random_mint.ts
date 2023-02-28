@@ -14,7 +14,12 @@ async function randomMint() {
         collection_owner: "archway12pcytur9del2t5wm93t8kuqakvf9yk9wzt4w0x", 
         collection_name: "Test NFT Collection 1",
         collection_symbol: "TNFT"
-    }, await walletFromMnemonic(wallet.mnemonic), wallet.address);
+    }, 1000000000, await walletFromMnemonic(wallet.mnemonic), wallet.address);
 
-    console.log("Item.minted.result::", tx);
+    if (tx instanceof Error){
+        console.log("Error@Item.minted@::", (tx as Error).message);
+    }
+    else {
+        console.log("Item.minted@::", tx );
+    }
 }
