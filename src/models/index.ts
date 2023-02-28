@@ -53,6 +53,15 @@ export interface Treasury {
 }
 
 
+export const LINK_TYPE_IMAGE_URL : number = 1;
+ 
+export const LINK_TYPE_EXTERNAL_LINK : number = 2;
+
+export const LINK_TYPE_VIDEO_URL : number = 3;
+
+export const LINK_TYPE_ANIMATION_URL : number = 4;
+
+
 export interface Link {
 
     link_type : number,
