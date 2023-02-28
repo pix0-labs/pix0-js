@@ -1,7 +1,7 @@
 // npx ts-node src/tests/test_query.ts
-import { getAllCollections } from "../handlers/query";
+import { getCollections } from "../handlers/query";
 
-getAllCollections().then(c=>{
+getCollections("archway12pcytur9del2t5wm93t8kuqakvf9yk9wzt4w0x").then(c=>{
     
     console.log("Collections::",c);
 })

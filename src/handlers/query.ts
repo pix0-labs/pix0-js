@@ -3,14 +3,14 @@ import { NETWORK , COLLECTION_CONTRACT_ADDR} from '../config';
 import { Collection } from '../models';
 require('dotenv').config();
 
-export const getAllCollections = async () :Promise<Collection[]> =>{
+export const getCollections = async (owner : string) :Promise<Collection[]> =>{
 
     const client = await ArchwayClient.connect(NETWORK.endpoint);
 
     const contractAddress = COLLECTION_CONTRACT_ADDR;
 
     const msg = {
-        get_all_collections: {},
+        get_collections: {owner : owner},
     };
     
     const collections = await client.queryContractSmart(

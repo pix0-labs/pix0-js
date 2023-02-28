@@ -61,4 +61,38 @@ export interface Link {
 }
 
 
+export interface Item {
+   
+    collection_owner : string,
+
+    collection_name : string, 
+
+    collection_symbol : string, 
+    
+    name : string,
+
+    description? : string,
+
+    links : Link[],
+
+    traits : Trait[],
+
+    background_color? : string,
+
+    date_created? : number,
+
+    date_updated? : number,
+
+}
+
+
+export interface Trait {
+    
+    display_type?: string,
+
+    trait_type: string,
+
+    value: string,
+}
+
 
