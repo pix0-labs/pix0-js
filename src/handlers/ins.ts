@@ -100,9 +100,51 @@ export const randomMintItem = async (collection_id : CollectionId,
         if (cnt > 0) {
 
             let idx = randomNumber(0, (cnt - 1));
-
+  
             const msg = {
                 mint_item: {index: `${idx}`, owner: collection_id.collection_owner,
+                collection_name : collection_id.collection_name, collection_symbol : collection_id.collection_symbol },
+            };
+    
+            const { transactionHash } = await client.execute(
+                walletAddress,
+                contractAddress,
+                msg,
+                'auto'
+            );
+        
+            return transactionHash;
+        }
+        else {
+            return new Error("Collection has NO more items for minting");
+        }
+      
+    }
+    catch(e : any) {
+
+        return e;
+    }
+}
+
+
+export const mintItemByName = async (collection_id : CollectionId, name : string, 
+    wallet : DirectSecp256k1HdWallet, walletAddress : string ) : Promise<string|Error> =>{
+
+    try {
+
+        const client = await SigningArchwayClient.connectWithSigner(NETWORK.endpoint, wallet, {
+            ...defaultSigningClientOptions,
+            prefix: NETWORK.prefix,
+        });
+    
+        const contractAddress = COLLECTION_CONTRACT_ADDR;
+
+        let cnt = await getItemsCount(collection_id.collection_owner, collection_id.collection_name, collection_id.collection_symbol);
+
+        if (cnt > 0) {
+
+            const msg = {
+                mint_item_by_name: {name: name , owner: collection_id.collection_owner,
                 collection_name : collection_id.collection_name, collection_symbol : collection_id.collection_symbol },
             };
     
