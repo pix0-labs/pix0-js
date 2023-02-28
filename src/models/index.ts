@@ -123,4 +123,30 @@ export interface Trait {
     value: string,
 }
 
+export interface Metadata {
+    
+    image? : string ,
+    
+    image_data?: string,
 
+    external_url?: string,
+
+    description? : string ,
+
+    name?: string ,
+
+    attributes?: Trait[],
+
+    background_color?: string,
+
+    animation_url?: string,
+
+    youtube_url?: string,
+}
+
+export interface Nft {
+
+    token_uri? : string,
+
+    extension : Metadata,
+}

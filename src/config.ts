@@ -10,3 +10,4 @@ export const COINS_MINIMAL_DENOM = "uconst";
 
 export const COLLECTION_CONTRACT_ADDR="archway1m7qff25r5ydgz5utg5s5p4t2lx9zqeztuw2k6gv8mhsetyye4wlsxcq3rt";
 
+export const TX_URL_PREFIX = "https://testnet.mintscan.io/archway-testnet/txs/";

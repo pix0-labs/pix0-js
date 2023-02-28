@@ -1,6 +1,6 @@
 import { ArchwayClient } from '@archwayhq/arch3.js';
 import { NETWORK , COLLECTION_CONTRACT_ADDR} from '../config';
-import { Collection, Item  } from '../models';
+import { Collection, Item , Nft } from '../models';
 require('dotenv').config();
 
 export const getCollections = async (owner : string, start_after? : string, limit? : number ) :Promise<Collection[]> =>{
@@ -60,4 +60,24 @@ export const getItemsCount = async (owner : string, collection_name : string, co
     );
 
     return itm_cnt_resp.count;
+}
+
+
+
+export const getMintedTokensByOwner = async (owner : string,  start_after? : string, limit? : number) :Promise<string[]> =>{
+
+    const client = await ArchwayClient.connect(NETWORK.endpoint);
+
+    const contractAddress = COLLECTION_CONTRACT_ADDR;
+
+    const msg = {
+        minted_tokens_by_owner: {owner : owner , start_after : start_after, limit : limit },
+    };
+    
+    const tok_resp = await client.queryContractSmart(
+        contractAddress,
+        msg
+    );
+
+    return tok_resp.tokens;
 }
