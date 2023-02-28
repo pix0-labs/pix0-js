@@ -81,3 +81,23 @@ export const getMintedTokensByOwner = async (owner : string,  start_after? : str
 
     return tok_resp.tokens;
 }
+
+
+
+export const getNftTokenInfo = async (token_id : string) :Promise<Nft> =>{
+
+    const client = await ArchwayClient.connect(NETWORK.endpoint);
+
+    const contractAddress = COLLECTION_CONTRACT_ADDR;
+
+    const msg = {
+        nft_token_info: {token_id : token_id },
+    };
+    
+    const tok_resp = await client.queryContractSmart(
+        contractAddress,
+        msg
+    );
+
+    return {token_uri : tok_resp.token_uri, extension : tok_resp.extension};
+}
