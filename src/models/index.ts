@@ -18,6 +18,15 @@ export interface PriceType {
     date_end? : number,  
 }
 
+export interface CollectionId {
+
+    collection_owner : string,
+    
+    collection_name: string, 
+    
+    collection_symbol: string,
+
+}
 
 export interface Collection {
 

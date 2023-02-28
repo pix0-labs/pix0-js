@@ -26,3 +26,8 @@ export const extractWalletFromEnv = () : Wallet =>{
 
     return { mnemonic : process.env.WALLET_MNEMONIC, address : process.env.WALLET_ADDRESS};
 }
+
+
+export const randomNumber = (min : number, max : number ): number =>{
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
