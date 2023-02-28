@@ -41,7 +41,14 @@ async function loopCreateItems() {
             traits: [],
         }, await walletFromMnemonic(wallet.mnemonic), wallet.address)
 
-        console.log("Items.created:: tx:", tx);
+        if (tx instanceof Error){
+
+            console.log(r, "Errot@Items.created::", (tx as Error).message);
+   
+        }
+        else {
+            console.log(r, "Items.created:: tx:", tx);
+        }
     }
 
 }
