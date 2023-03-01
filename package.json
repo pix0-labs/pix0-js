@@ -1,6 +1,6 @@
 {
   "name": "pix0-js-arch-test",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "This is the JS Library that contains the required JS functions to interact with Pix0 NFT Collection Contract",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -17,8 +17,7 @@
   "dependencies": {
     "@archwayhq/arch3.js": "^0.1.0",
     "@cosmjs/proto-signing": "^0.29.5",
-    "@cosmjs/stargate": "^0.29.5",
-    "dotenv": "^16.0.3"
+    "@cosmjs/stargate": "^0.29.5"
   },
   "scripts": {
     "build": "tsc",
