@@ -1,6 +1,6 @@
 {
   "name": "pix0-js",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
@@ -16,7 +16,7 @@
     "dotenv": "^16.0.3"
   },
   "scripts": {
-    "build": "tsc && tsc --module CommonJS --outDir lib src/export.ts",
+    "build": "tsc",
     "clean": "rm -rf dist",
     "compile": "tsc"
   }
