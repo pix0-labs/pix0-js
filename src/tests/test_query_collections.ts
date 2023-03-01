@@ -6,5 +6,9 @@ let wallet = extractWallet();
 
 getCollections(wallet.address).then(c=>{
     
-    console.log("Collections::",c);
+    console.log("Collections::");
+    c.forEach((cc, idx)=>{
+
+        console.log(idx, cc);
+    })
 })

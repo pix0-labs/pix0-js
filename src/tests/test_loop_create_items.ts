@@ -4,6 +4,7 @@ import { createItem } from "../handlers/ins";
 import { walletFromMnemonic } from "../handlers/ins";
 import { LINK_TYPE_IMAGE_URL } from "../models";
 import { extractWallet} from "../utils";
+import { TX_URL_PREFIX } from "../config";
 
 loopCreateItems();
 
@@ -47,7 +48,7 @@ async function loopCreateItems() {
    
         }
         else {
-            console.log(r, "Items.created:: tx:", tx);
+            console.log(r, "Items.created:: tx:", `${TX_URL_PREFIX}${tx}`);
         }
     }
 
