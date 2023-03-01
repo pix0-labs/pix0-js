@@ -1,7 +1,7 @@
 // npx ts-node src/tests/test_create.ts
 import { createCollection, walletFromMnemonic } from "../handlers/ins";
 import { extractWallet} from "../utils";
-import { COLLECTION_STATUS_ACTIVATED } from "../models";
+import { COLLECTION_STATUS_ACTIVATED , PriceType, PRICE_TYPE_STANDARD} from "../models";
 
 testCreateCollection();
 
@@ -11,9 +11,14 @@ async function testCreateCollection() {
 
     if (wallet) {
 
+        let prices : PriceType[] = [{
+            price_type : PRICE_TYPE_STANDARD, value : 125,
+        }];
+
         let res = await createCollection({
             name : "Test NFT Collection 2",
             symbol : "TNFT2",
+            prices : prices,
             status : COLLECTION_STATUS_ACTIVATED, 
             }, await walletFromMnemonic(wallet.mnemonic), wallet.address );
         

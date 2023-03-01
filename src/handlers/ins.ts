@@ -26,16 +26,9 @@ export const createCollection = async (collection : Collection, wallet : DirectS
     
         const contractAddress = COLLECTION_CONTRACT_ADDR;
         const msg = {
-            create_collection: {name : collection.name, symbol: collection.symbol,
-                description : collection.description, 
-                treasuries : collection.treasuries,
-                attributes : collection.attributes,
-                prices : collection.prices, 
-                status : collection.status, 
-            },
+            create_collection: { collection : collection},
         };
 
-    
         const { transactionHash } = await client.execute(
             walletAddress,
             contractAddress,

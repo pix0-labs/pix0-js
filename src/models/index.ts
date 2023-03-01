@@ -5,6 +5,12 @@ export interface Attribute {
     value : string, 
 }
 
+export const PRICE_TYPE_STANDARD : number = 1;
+
+export const PRICE_TYPE_WL : number = 2;
+
+export const PRICE_TYPE_OG : number = 3;
+
 export interface PriceType {
 
     price_type : number , 
@@ -26,6 +32,15 @@ export interface CollectionId {
     
     collection_symbol: string,
 
+}
+
+export interface Royalty{
+
+    wallet : string, 
+
+    percentage : number, 
+
+    name? : string,
 }
 
 
@@ -53,6 +68,8 @@ export interface Collection {
     attributes? : Attribute[],
 
     prices? : PriceType[],
+
+    royalties? : Royalty[],
 
     status?: number, 
 
