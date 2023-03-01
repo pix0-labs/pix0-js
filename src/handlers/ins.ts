@@ -45,6 +45,37 @@ export const createCollection = async (collection : Collection, wallet : DirectS
 }
 
 
+
+export const updateCollection = async (collection : Collection, wallet : DirectSecp256k1HdWallet, walletAddress : string ) : Promise<string|Error> =>{
+
+    try {
+
+        const client = await SigningArchwayClient.connectWithSigner(NETWORK.endpoint, wallet, {
+            ...defaultSigningClientOptions,
+            prefix: NETWORK.prefix,
+        });
+    
+        const contractAddress = COLLECTION_CONTRACT_ADDR;
+        const msg = {
+            update_collection: { collection : collection},
+        };
+
+        const { transactionHash } = await client.execute(
+            walletAddress,
+            contractAddress,
+            msg,
+            'auto'
+        );
+    
+        return transactionHash;
+    }
+    catch(e : any) {
+
+        return e;
+    }
+}
+
+
 export const createItem = async (item : Item , wallet : DirectSecp256k1HdWallet, walletAddress : string ) : Promise<string|Error> =>{
 
     try {
