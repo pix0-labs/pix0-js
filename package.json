@@ -16,7 +16,7 @@
     "dotenv": "^16.0.3"
   },
   "scripts": {
-    "build": "yarn run clean && yarn run compile",
+    "build": "tsc && tsc --module CommonJS --outDir lib src/export.ts",
     "clean": "rm -rf dist",
     "compile": "tsc"
   }
