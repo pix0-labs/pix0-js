@@ -4,6 +4,6 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var index = require('./dist/index.js');
+var index = require('./index.js');
 
 module.exports = index;
