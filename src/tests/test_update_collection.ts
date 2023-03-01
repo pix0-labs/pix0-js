@@ -16,7 +16,7 @@ async function testUpdateCollection() {
         let res = await updateCollection({
             name : "Test NFT Collection 2",
             symbol : "TNFT2",
-            status : COLLECTION_STATUS_ACTIVATED, 
+            status : COLLECTION_STATUS_DRAFT, 
             }, await walletFromMnemonic(wallet.mnemonic), wallet.address );
         
         console.log("Collection updated with result:", `${TX_URL_PREFIX}${res}`);
