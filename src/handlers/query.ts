@@ -1,7 +1,6 @@
 import { ArchwayClient } from '@archwayhq/arch3.js';
 import { NETWORK , COLLECTION_CONTRACT_ADDR} from '../config';
 import { Collection, Item , Nft } from '../models';
-require('dotenv').config();
 
 export const getCollections = async (owner : string, start_after? : string, limit? : number ) :Promise<Collection[]> =>{
 
