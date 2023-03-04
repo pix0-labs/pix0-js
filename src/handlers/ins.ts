@@ -154,7 +154,13 @@ export const randomMintItem = async (collection_id : CollectionId,
     
         const contractAddress = COLLECTION_CONTRACT_ADDR;
 
-        let cnt = await getItemsCount(collection_id.collection_owner, collection_id.collection_name, collection_id.collection_symbol);
+        let cnt = await getItemsCount({
+            owner :
+            collection_id.collection_owner, 
+            collection_name :
+            collection_id.collection_name, 
+            collection_symbol :
+            collection_id.collection_symbol});
 
         if (cnt > 0) {
 
@@ -198,7 +204,13 @@ export const mintItemByName = async (collection_id : CollectionId, name : string
     
         const contractAddress = COLLECTION_CONTRACT_ADDR;
 
-        let cnt = await getItemsCount(collection_id.collection_owner, collection_id.collection_name, collection_id.collection_symbol);
+        let cnt = await getItemsCount({
+            owner :
+            collection_id.collection_owner, 
+            collection_name :
+            collection_id.collection_name, 
+            collection_symbol :
+            collection_id.collection_symbol});
 
         if (cnt > 0) {
 

@@ -2,40 +2,57 @@ import { ArchwayClient } from '@archwayhq/arch3.js';
 import { NETWORK , COLLECTION_CONTRACT_ADDR} from '../config';
 import { Collection, Item , Nft } from '../models';
 
-export const getCollections = async (owner : string, start_after? : string, limit? : number ) :Promise<Collection[]> =>{
 
-    const client = await ArchwayClient.connect(NETWORK.endpoint);
+const query = async (msg : any , queryHandler? : any ) : Promise<any> =>{
 
     const contractAddress = COLLECTION_CONTRACT_ADDR;
 
-    const msg = {
-        get_collections: {owner : owner, start_after : start_after, limit : limit },
+    if ( queryHandler ) {
+
+        let result = await queryHandler(contractAddress, msg);
+        return result;
+    }
+    else {
+
+        const client = await ArchwayClient.connect(NETWORK.endpoint);
+
+        const result = await client.queryContractSmart(
+            contractAddress,
+            msg
+        );
+
+        return result;
+    }
+}
+
+
+
+export const getCollections = async (msg : {owner : string, start_after? : string, limit? : number}, 
+    queryHandler? : any  ) :Promise<Collection[]> =>{
+
+    const _msg = {
+        get_collections: {owner : msg.owner, start_after : msg.start_after, limit : msg.limit },
     };
     
-    const collections = await client.queryContractSmart(
-        contractAddress,
-        msg
-    );
+    const collections = await query(_msg, queryHandler);
 
     return collections.collections;
 }
 
 
 
-export const getItems = async (owner : string, collection_name : string, collection_symbol : string,
-    start_after? : string, limit? : number) :Promise<Item[]> =>{
+export const getItems = async (msg : {owner : string, collection_name : string, collection_symbol : string,
+    start_after? : string, limit? : number}, queryHandler? : any ) :Promise<Item[]> =>{
 
-    const client = await ArchwayClient.connect(NETWORK.endpoint);
-
-    const contractAddress = COLLECTION_CONTRACT_ADDR;
-
-    const msg = {
-        get_items: {owner : owner, collection_name : collection_name, collection_symbol: collection_symbol,start_after : start_after, limit : limit  },
+    const _msg = {
+        get_items: {owner : msg.owner, 
+            collection_name : msg.collection_name, 
+            collection_symbol: msg.collection_symbol,
+            start_after : msg.start_after, limit : msg.limit  },
     };
     
-    const items_res = await client.queryContractSmart(
-        contractAddress,
-        msg
+    const items_res = await query(
+        _msg, queryHandler 
     );
 
     return items_res.items;
@@ -43,19 +60,17 @@ export const getItems = async (owner : string, collection_name : string, collect
 
 
 
-export const getItemsCount = async (owner : string, collection_name : string, collection_symbol : string) :Promise<number> =>{
+export const getItemsCount = async (msg : {owner : string, collection_name : string, collection_symbol : string},
+    queryHandler? : any ) :Promise<number> =>{
 
-    const client = await ArchwayClient.connect(NETWORK.endpoint);
-
-    const contractAddress = COLLECTION_CONTRACT_ADDR;
-
-    const msg = {
-        get_items_count: {owner : owner, collection_name : collection_name, collection_symbol: collection_symbol },
+    const _msg = {
+        get_items_count: {owner : msg.owner, 
+        collection_name : msg.collection_name, 
+        collection_symbol: msg.collection_symbol },
     };
     
-    const itm_cnt_resp = await client.queryContractSmart(
-        contractAddress,
-        msg
+    const itm_cnt_resp = await query(
+        _msg, queryHandler 
     );
 
     return itm_cnt_resp.count;
@@ -63,40 +78,28 @@ export const getItemsCount = async (owner : string, collection_name : string, co
 
 
 
-export const getMintedTokensByOwner = async (owner : string,  start_after? : string, limit? : number) :Promise<string[]> =>{
+export const getMintedTokensByOwner = async (msg : {owner : string,  start_after? : string, limit? : number},
+    queryHandler? : any ) :Promise<string[]> =>{
 
-    const client = await ArchwayClient.connect(NETWORK.endpoint);
-
-    const contractAddress = COLLECTION_CONTRACT_ADDR;
-
-    const msg = {
-        minted_tokens_by_owner: {owner : owner , start_after : start_after, limit : limit },
+    const _msg = {
+        minted_tokens_by_owner: {owner : msg.owner , 
+        start_after : msg.start_after, limit : msg.limit },
     };
     
-    const tok_resp = await client.queryContractSmart(
-        contractAddress,
-        msg
-    );
+    const tok_resp = await query(_msg, queryHandler);
 
     return tok_resp.tokens;
 }
 
 
 
-export const getNftTokenInfo = async (token_id : string) :Promise<Nft> =>{
-
-    const client = await ArchwayClient.connect(NETWORK.endpoint);
-
-    const contractAddress = COLLECTION_CONTRACT_ADDR;
+export const getNftTokenInfo = async (token_id : string, queryHandler? : any ) :Promise<Nft> =>{
 
     const msg = {
         nft_token_info: {token_id : token_id },
     };
     
-    const tok_resp = await client.queryContractSmart(
-        contractAddress,
-        msg
-    );
+    const tok_resp = await query(msg, queryHandler);
 
     return {token_uri : tok_resp.token_uri, extension : tok_resp.extension};
 }
