@@ -1,6 +1,3 @@
-
-
-
 export const getAddressBalance = async  (address : string, client : any, coinMinimalDenom : string )
 : Promise<number|undefined> =>{
     try {
@@ -14,4 +11,4 @@ export const getAddressBalance = async  (address : string, client : any, coinMin
         console.warn('Error reading account balance', [e, address]);
     
     }
-  };
+};
