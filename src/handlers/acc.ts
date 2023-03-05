@@ -10,7 +10,7 @@ export const getAddressBalance = async  (address : string, coinMinimalDenom : st
 
           let balance = await client.getBalance(address, coinMinimalDenom);
       
-          return (balance/ (coinDecimals ?? 1));
+          return (balance/ Math.pow(10, (coinDecimals ?? 0)));
   
       }
       else {
@@ -18,7 +18,7 @@ export const getAddressBalance = async  (address : string, coinMinimalDenom : st
           let sClient = await StargateClient.connect(NETWORK.endpoint);
           let b =  parseInt((await sClient.getBalance(address, coinMinimalDenom)).amount);
 
-          return (b/(coinDecimals ?? 1));
+          return (b/ Math.pow(10, (coinDecimals ?? 0)));
 
       }
     
