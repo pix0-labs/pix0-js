@@ -17,9 +17,10 @@ export const walletFromMnemonic = async (mnemonic: string, options: Partial<Dire
     return wallet;
 }
 
+type SigningClient = SigningArchwayClient | SigningCosmWasmClient;
 
-
-const execute = async (msg : any,  walletAddress : string , client : any  ) : Promise<string|Error> =>{
+const execute = async (msg : any,  walletAddress : string , 
+    client : SigningClient  ) : Promise<string|Error> =>{
 
     let gasPrice :any = GasPrice.fromString('0.002' + COINS_MINIMAL_DENOM);
     
@@ -29,6 +30,13 @@ const execute = async (msg : any,  walletAddress : string , client : any  ) : Pr
 
     console.log("typeof.client::", typeof client);
 
+    if ( client instanceof SigningArchwayClient){
+        let sclient = client as SigningArchwayClient;
+        let tx = await sclient.execute(walletAddress, contractAddress, msg, txFee);
+    
+        return tx.transactionHash;
+    }
+    else
     if ( client instanceof SigningCosmWasmClient) {
 
         let sclient = client as SigningCosmWasmClient;
@@ -36,12 +44,7 @@ const execute = async (msg : any,  walletAddress : string , client : any  ) : Pr
     
         return tx.transactionHash; 
     }
-    else if ( client instanceof SigningArchwayClient){
-        let sclient = client as SigningArchwayClient;
-        let tx = await sclient.execute(walletAddress, contractAddress, msg, txFee);
     
-        return tx.transactionHash;
-    }
     else {
 
         return new Error('Client is neither SigningCosmWasmClient nor SigningArchwayClient');
@@ -69,7 +72,7 @@ export const createSigningClient = async ( mnemonic : string  ) : Promise<Signin
 }
 
 
-export const createCollection = async (collection : Collection, walletAddress : string, client : any  ) : Promise<string|Error> =>{
+export const createCollection = async (collection : Collection, walletAddress : string, client : SigningClient  ) : Promise<string|Error> =>{
 
     try {
 
@@ -90,7 +93,7 @@ export const createCollection = async (collection : Collection, walletAddress : 
 
 
 export const updateCollection = async (collection : Collection, walletAddress : string,
-    client : any  ) : Promise<string|Error> =>{
+    client : SigningClient  ) : Promise<string|Error> =>{
 
     try {
         const msg = {
@@ -111,7 +114,7 @@ export const updateCollection = async (collection : Collection, walletAddress : 
 
 
 export const removeCollection = async (collection : {name : string,
-    symbol : string}, walletAddress : string, client : any  ) : Promise<string|Error> =>{
+    symbol : string}, walletAddress : string, client : SigningClient  ) : Promise<string|Error> =>{
 
     try {
 
@@ -130,7 +133,7 @@ export const removeCollection = async (collection : {name : string,
 }
 
 
-export const createItem = async (item : Item , walletAddress : string, client : any  ) : Promise<string|Error> =>{
+export const createItem = async (item : Item , walletAddress : string, client : SigningClient  ) : Promise<string|Error> =>{
 
     try {
 
@@ -150,7 +153,7 @@ export const createItem = async (item : Item , walletAddress : string, client : 
 
 
 export const randomMintItem = async (collection_id : CollectionId, 
-walletAddress : string, client : any, queryHandler? : any  ) : Promise<string|Error> =>{
+walletAddress : string, client : SigningClient, queryHandler? : any  ) : Promise<string|Error> =>{
 
     try {
 
@@ -191,7 +194,7 @@ walletAddress : string, client : any, queryHandler? : any  ) : Promise<string|Er
 
 
 export const mintItemByName = async (collection_id : CollectionId, name : string, 
-    walletAddress : string, client : any, queryHandler? : any  ) : Promise<string|Error> =>{
+    walletAddress : string, client : SigningClient, queryHandler? : any  ) : Promise<string|Error> =>{
 
     try {
 
