@@ -8,7 +8,6 @@ import { COLLECTION_CONTRACT_ADDR } from '../config';
 import { randomNumber } from '../utils';
 
 
-let defaultSigningClientOptions : any =  { gasPrice: `0.005${DENOM}` };
 
 export const walletFromMnemonic = async (mnemonic: string, options: Partial<DirectSecp256k1HdWalletOptions> =
     { prefix: NETWORK.prefix }) : Promise<DirectSecp256k1HdWallet>=>{
@@ -19,46 +18,44 @@ export const walletFromMnemonic = async (mnemonic: string, options: Partial<Dire
 
 
 
-const execute = async (msg : any, client? : any, walletAddress? : string  ) =>{
+const execute = async (msg : any,  walletAddress : string , client : any ) : Promise<string> =>{
 
+    let gasPrice :any = GasPrice.fromString('0.002' + COINS_MINIMAL_DENOM);
+    
+    let txFee = calculateFee(300_000, gasPrice);
 
-    if ( client ) {
-
-        let gasPrice :any = GasPrice.fromString('0.002' + COINS_MINIMAL_DENOM);
+    const contractAddress = COLLECTION_CONTRACT_ADDR;
         
-        let txFee = calculateFee(300_000, gasPrice);
+    let tx = await client.execute(walletAddress, contractAddress, msg, txFee);
     
-        const contractAddress = COLLECTION_CONTRACT_ADDR;
-           
-        let tx = await client.execute(walletAddress, contractAddress, msg, txFee);
-    
-    }
-   
+    return tx; 
 
 }
 
-export const createCollection = async (collection : Collection, wallet : DirectSecp256k1HdWallet, walletAddress : string ) : Promise<string|Error> =>{
+let defaultSigningClientOptions : any =  { gasPrice: `0.005${DENOM}` };
+
+export const createSigningArchwayClient = async ( wallet : DirectSecp256k1HdWallet ) : Promise<SigningArchwayClient> => {
+
+
+    const client = await SigningArchwayClient.connectWithSigner(NETWORK.endpoint, wallet, {
+        ...defaultSigningClientOptions,
+        prefix: NETWORK.prefix,
+    });
+
+    return client;
+}
+
+export const createCollection = async (collection : Collection, walletAddress : string, client : any  ) : Promise<string|Error> =>{
 
     try {
 
-        const client = await SigningArchwayClient.connectWithSigner(NETWORK.endpoint, wallet, {
-            ...defaultSigningClientOptions,
-            prefix: NETWORK.prefix,
-        });
-    
-        const contractAddress = COLLECTION_CONTRACT_ADDR;
         const msg = {
             create_collection: { collection : collection},
         };
 
-        const { transactionHash } = await client.execute(
-            walletAddress,
-            contractAddress,
-            msg,
-            'auto'
-        );
-    
-        return transactionHash;
+        const tx = await execute(msg, walletAddress, client);
+        return tx ; 
+
     }
     catch(e : any) {
 
@@ -68,28 +65,18 @@ export const createCollection = async (collection : Collection, wallet : DirectS
 
 
 
-export const updateCollection = async (collection : Collection, wallet : DirectSecp256k1HdWallet, walletAddress : string ) : Promise<string|Error> =>{
+export const updateCollection = async (collection : Collection, walletAddress : string,
+    client : any  ) : Promise<string|Error> =>{
 
     try {
-
-        const client = await SigningArchwayClient.connectWithSigner(NETWORK.endpoint, wallet, {
-            ...defaultSigningClientOptions,
-            prefix: NETWORK.prefix,
-        });
-    
-        const contractAddress = COLLECTION_CONTRACT_ADDR;
         const msg = {
             update_collection: { collection : collection},
         };
 
-        const { transactionHash } = await client.execute(
-            walletAddress,
-            contractAddress,
-            msg,
-            'auto'
-        );
-    
-        return transactionHash;
+       const tx = await execute(msg, walletAddress, client);
+        
+       return tx ; 
+        
     }
     catch(e : any) {
 
@@ -100,29 +87,17 @@ export const updateCollection = async (collection : Collection, wallet : DirectS
 
 
 export const removeCollection = async (collection : {name : string,
-    symbol : string}, 
-    wallet : DirectSecp256k1HdWallet, walletAddress : string ) : Promise<string|Error> =>{
+    symbol : string}, walletAddress : string, client : any  ) : Promise<string|Error> =>{
 
     try {
 
-        const client = await SigningArchwayClient.connectWithSigner(NETWORK.endpoint, wallet, {
-            ...defaultSigningClientOptions,
-            prefix: NETWORK.prefix,
-        });
-    
-        const contractAddress = COLLECTION_CONTRACT_ADDR;
         const msg = {
             remove_collection: { name : collection.name, symbol : collection.symbol},
         };
 
-        const { transactionHash } = await client.execute(
-            walletAddress,
-            contractAddress,
-            msg,
-            'auto'
-        );
-    
-        return transactionHash;
+        const tx = await execute(msg, walletAddress, client);
+        
+        return tx ;     
     }
     catch(e : any) {
 
@@ -131,29 +106,17 @@ export const removeCollection = async (collection : {name : string,
 }
 
 
-export const createItem = async (item : Item , wallet : DirectSecp256k1HdWallet, walletAddress : string ) : Promise<string|Error> =>{
+export const createItem = async (item : Item , walletAddress : string, client : any  ) : Promise<string|Error> =>{
 
     try {
-
-        const client = await SigningArchwayClient.connectWithSigner(NETWORK.endpoint, wallet, {
-            ...defaultSigningClientOptions,
-            prefix: NETWORK.prefix,
-        });
-    
-        const contractAddress = COLLECTION_CONTRACT_ADDR;
 
         const msg = {
             create_item: {item : item},
         };
 
-        const { transactionHash } = await client.execute(
-            walletAddress,
-            contractAddress,
-            msg,
-            'auto'
-        );
-    
-        return transactionHash;
+        const tx = await execute(msg, walletAddress, client);
+        return tx ;     
+ 
     }
     catch(e : any) {
 
@@ -163,18 +126,9 @@ export const createItem = async (item : Item , wallet : DirectSecp256k1HdWallet,
 
 
 export const randomMintItem = async (collection_id : CollectionId, 
-    wallet : DirectSecp256k1HdWallet, walletAddress : string,  price? : number ) : Promise<string|Error> =>{
+walletAddress : string, client : any, queryHandler? : any  ) : Promise<string|Error> =>{
 
     try {
-
-        let gas : any = price ? { gasPrice: `${price}${DENOM}` } : defaultSigningClientOptions;
-
-        const client = await SigningArchwayClient.connectWithSigner(NETWORK.endpoint, wallet, {
-            ...gas,
-            prefix: NETWORK.prefix,
-        });
-    
-        const contractAddress = COLLECTION_CONTRACT_ADDR;
 
         let cnt = await getItemsCount({
             owner :
@@ -182,7 +136,7 @@ export const randomMintItem = async (collection_id : CollectionId,
             collection_name :
             collection_id.collection_name, 
             collection_symbol :
-            collection_id.collection_symbol});
+            collection_id.collection_symbol}, queryHandler);
 
         if (cnt > 0) {
 
@@ -192,15 +146,11 @@ export const randomMintItem = async (collection_id : CollectionId,
                 mint_item: {index: `${idx}`, owner: collection_id.collection_owner,
                 collection_name : collection_id.collection_name, collection_symbol : collection_id.collection_symbol },
             };
+
+            const tx = await execute(msg, walletAddress, client);
+            return tx ;     
+     
     
-            const { transactionHash } = await client.execute(
-                walletAddress,
-                contractAddress,
-                msg,
-                'auto'
-            );
-        
-            return transactionHash;
         }
         else {
             return new Error("Collection has NO more items for minting");
@@ -215,15 +165,10 @@ export const randomMintItem = async (collection_id : CollectionId,
 
 
 export const mintItemByName = async (collection_id : CollectionId, name : string, 
-    wallet : DirectSecp256k1HdWallet, walletAddress : string ) : Promise<string|Error> =>{
+    walletAddress : string, client : any, queryHandler? : any  ) : Promise<string|Error> =>{
 
     try {
 
-        const client = await SigningArchwayClient.connectWithSigner(NETWORK.endpoint, wallet, {
-            ...defaultSigningClientOptions,
-            prefix: NETWORK.prefix,
-        });
-    
         const contractAddress = COLLECTION_CONTRACT_ADDR;
 
         let cnt = await getItemsCount({
@@ -232,7 +177,7 @@ export const mintItemByName = async (collection_id : CollectionId, name : string
             collection_name :
             collection_id.collection_name, 
             collection_symbol :
-            collection_id.collection_symbol});
+            collection_id.collection_symbol}, queryHandler);
 
         if (cnt > 0) {
 
@@ -241,14 +186,8 @@ export const mintItemByName = async (collection_id : CollectionId, name : string
                 collection_name : collection_id.collection_name, collection_symbol : collection_id.collection_symbol },
             };
     
-            const { transactionHash } = await client.execute(
-                walletAddress,
-                contractAddress,
-                msg,
-                'auto'
-            );
-        
-            return transactionHash;
+            const tx = await execute(msg, walletAddress, client);
+            return tx ;     
         }
         else {
             return new Error("Collection has NO more items for minting");
