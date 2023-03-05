@@ -1,10 +1,12 @@
 import { SigningArchwayClient } from '@archwayhq/arch3.js';
 import { DirectSecp256k1HdWallet, DirectSecp256k1HdWalletOptions } from '@cosmjs/proto-signing';
-import { NETWORK, DENOM} from '../config';
+import { calculateFee, GasPrice } from "@cosmjs/stargate";
+import { NETWORK, DENOM, COINS_MINIMAL_DENOM} from '../config';
 import { getItemsCount } from './query';
 import { Collection, Item, CollectionId  } from '../models';
 import { COLLECTION_CONTRACT_ADDR } from '../config';
 import { randomNumber } from '../utils';
+
 
 let defaultSigningClientOptions : any =  { gasPrice: `0.005${DENOM}` };
 
@@ -13,6 +15,26 @@ export const walletFromMnemonic = async (mnemonic: string, options: Partial<Dire
 
     const wallet = await DirectSecp256k1HdWallet.fromMnemonic(mnemonic, options);
     return wallet;
+}
+
+
+
+const execute = async (msg : any, client? : any, walletAddress? : string  ) =>{
+
+
+    if ( client ) {
+
+        let gasPrice :any = GasPrice.fromString('0.002' + COINS_MINIMAL_DENOM);
+        
+        let txFee = calculateFee(300_000, gasPrice);
+    
+        const contractAddress = COLLECTION_CONTRACT_ADDR;
+           
+        let tx = await client.execute(walletAddress, contractAddress, msg, txFee);
+    
+    }
+   
+
 }
 
 export const createCollection = async (collection : Collection, wallet : DirectSecp256k1HdWallet, walletAddress : string ) : Promise<string|Error> =>{
