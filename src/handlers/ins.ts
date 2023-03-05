@@ -47,6 +47,13 @@ export const createSigningArchwayClient = async ( wallet : DirectSecp256k1HdWall
     return client;
 }
 
+export const createSigningClient = async ( mnemonic : string  ) : Promise<SigningArchwayClient> => {
+
+    let wallet = await walletFromMnemonic(mnemonic);
+    return createSigningArchwayClient(wallet);
+}
+
+
 export const createCollection = async (collection : Collection, walletAddress : string, client : any  ) : Promise<string|Error> =>{
 
     try {
