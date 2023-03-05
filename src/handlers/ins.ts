@@ -25,6 +25,8 @@ const execute = async (msg : any,  walletAddress : string , client : any ) : Pro
     let txFee = calculateFee(300_000, gasPrice);
 
     const contractAddress = COLLECTION_CONTRACT_ADDR;
+
+    console.log("client.is::", client);
         
     let tx = await client.execute(walletAddress, contractAddress, msg, txFee);
     
@@ -138,6 +140,8 @@ walletAddress : string, client : any, queryHandler? : any  ) : Promise<string|Er
             collection_symbol :
             collection_id.collection_symbol}, queryHandler);
 
+        console.log("queryCollecitemItems.cnt::", cnt);
+            
         if (cnt > 0) {
 
             let idx = randomNumber(0, (cnt - 1));
