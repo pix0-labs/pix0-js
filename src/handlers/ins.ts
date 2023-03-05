@@ -1,5 +1,5 @@
 import { SigningArchwayClient } from '@archwayhq/arch3.js';
-import { SigningCosmWasmClient } from '@archwayhq/arch3.js';
+import { SigningCosmWasmClient } from '@cosmjs/cosmwasm-stargate';
 import { DirectSecp256k1HdWallet, DirectSecp256k1HdWalletOptions } from '@cosmjs/proto-signing';
 import { calculateFee, GasPrice } from "@cosmjs/stargate";
 import { NETWORK, DENOM, COINS_MINIMAL_DENOM} from '../config';
