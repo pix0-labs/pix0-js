@@ -28,27 +28,12 @@ const execute = async (msg : any,  walletAddress : string ,
 
     const contractAddress = COLLECTION_CONTRACT_ADDR;
 
-    console.log("typeof.client::", typeof client);
+    console.log("execute.typeof.client::", typeof client);
 
-    if ( client instanceof SigningArchwayClient){
-        let sclient = client as SigningArchwayClient;
-        let tx = await sclient.execute(walletAddress, contractAddress, msg, txFee);
-    
-        return tx.transactionHash;
-    }
-    else
-    if ( client instanceof SigningCosmWasmClient) {
+    let tx = await client.execute(walletAddress, contractAddress, msg, txFee);
 
-        let sclient = client as SigningCosmWasmClient;
-        let tx = await sclient.execute(walletAddress, contractAddress, msg, txFee);
-    
-        return tx.transactionHash; 
-    }
-    
-    else {
+    return tx.transactionHash; 
 
-        return new Error('Client is neither SigningCosmWasmClient nor SigningArchwayClient');
-    }
  
 }
 
