@@ -1,4 +1,5 @@
 import { SigningArchwayClient } from '@archwayhq/arch3.js';
+import { SigningCosmWasmClient } from '@archwayhq/arch3.js';
 import { DirectSecp256k1HdWallet, DirectSecp256k1HdWalletOptions } from '@cosmjs/proto-signing';
 import { calculateFee, GasPrice } from "@cosmjs/stargate";
 import { NETWORK, DENOM, COINS_MINIMAL_DENOM} from '../config';
@@ -18,7 +19,7 @@ export const walletFromMnemonic = async (mnemonic: string, options: Partial<Dire
 
 
 
-const execute = async (msg : any,  walletAddress : string , client : any ) : Promise<string> =>{
+const execute = async (msg : any,  walletAddress : string , client : any  ) : Promise<string|Error> =>{
 
     let gasPrice :any = GasPrice.fromString('0.002' + COINS_MINIMAL_DENOM);
     
@@ -26,12 +27,26 @@ const execute = async (msg : any,  walletAddress : string , client : any ) : Pro
 
     const contractAddress = COLLECTION_CONTRACT_ADDR;
 
-    console.log("client.is::", client);
-        
-    let tx = await client.execute(walletAddress, contractAddress, msg, txFee);
-    
-    return tx; 
+    console.log("typeof.client::", typeof client);
 
+    if ( client instanceof SigningCosmWasmClient) {
+
+        let sclient = client as SigningCosmWasmClient;
+        let tx = await sclient.execute(walletAddress, contractAddress, msg, txFee);
+    
+        return tx.transactionHash; 
+    }
+    else if ( client instanceof SigningArchwayClient){
+        let sclient = client as SigningArchwayClient;
+        let tx = await sclient.execute(walletAddress, contractAddress, msg, txFee);
+    
+        return tx.transactionHash;
+    }
+    else {
+
+        return new Error('Client is neither SigningCosmWasmClient nor SigningArchwayClient');
+    }
+ 
 }
 
 let defaultSigningClientOptions : any =  { gasPrice: `0.005${DENOM}` };
