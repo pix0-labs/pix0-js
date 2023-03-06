@@ -20,13 +20,11 @@ export const walletFromMnemonic = async (mnemonic: string, options: Partial<Dire
 type SigningClient = SigningArchwayClient | SigningCosmWasmClient;
 
 const execute = async (msg : any,  walletAddress : string , 
-    client : SigningClient  ) : Promise<string|Error> =>{
+    client : SigningClient, contractAddress : string = COLLECTION_CONTRACT_ADDR  ) : Promise<string|Error> =>{
 
     let gasPrice :any = GasPrice.fromString('0.002' + COINS_MINIMAL_DENOM);
     
     let txFee = calculateFee(300_000, gasPrice);
-
-    const contractAddress = COLLECTION_CONTRACT_ADDR;
 
     let tx = await client.execute(walletAddress, contractAddress, msg, txFee);
 
