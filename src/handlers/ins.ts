@@ -28,13 +28,10 @@ const execute = async (msg : any,  walletAddress : string ,
 
     const contractAddress = COLLECTION_CONTRACT_ADDR;
 
-    console.log("execute.typeof.client::", typeof client);
-
     let tx = await client.execute(walletAddress, contractAddress, msg, txFee);
 
     return tx.transactionHash; 
 
- 
 }
 
 let defaultSigningClientOptions : any =  { gasPrice: `0.005${DENOM}` };
