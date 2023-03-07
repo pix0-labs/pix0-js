@@ -145,15 +145,16 @@ walletAddress : string, client : SigningClient, queryHandler? : any  ) : Promise
     try {
 
 
-        let coll = await getCollection({ owner :
+        let msg = { owner :
             collection_info.collection_owner, 
             name :
             collection_info.collection_name, 
             symbol :
-            collection_info.collection_symbol},queryHandler);
+            collection_info.collection_symbol};
+        let coll = await getCollection(msg,queryHandler);
         
-        if (coll === undefined) {
-            return new Error("Collection NOT found!");
+        if (coll === undefined || coll === null ) {
+            return new Error(`Collection "${msg}" NOT found!`);
         }
 
         let price_type = collection_info.price_type ?? 1;
