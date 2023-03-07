@@ -4,7 +4,7 @@ import { DirectSecp256k1HdWallet, DirectSecp256k1HdWalletOptions } from '@cosmjs
 import { calculateFee, GasPrice } from "@cosmjs/stargate";
 import { NETWORK, DENOM, COINS_MINIMAL_DENOM} from '../config';
 import { getItemsCount, getCollection } from './query';
-import { Collection, Item, CollectionInfo  } from '../models';
+import { Collection, Item, CollectionInfo, PriceType  } from '../models';
 import { COLLECTION_CONTRACT_ADDR } from '../config';
 import { randomNumber } from '../utils';
 
@@ -159,9 +159,11 @@ walletAddress : string, client : SigningClient, queryHandler? : any  ) : Promise
 
         let price_type = collection_info.price_type ?? 1;
 
-        let price = coll.prices.filter((p)=>{
+        let price : PriceType[]|undefined = 
+        coll.prices !== undefined && coll.prices !== null 
+        ? coll.prices.filter((p)=>{
             p.price_type === price_type;
-        });
+        }) : undefined;
 
         console.log("price.for.item:", price);
 
@@ -184,7 +186,7 @@ walletAddress : string, client : SigningClient, queryHandler? : any  ) : Promise
             };
 
             const tx = await execute(msg, walletAddress, client, 
-            price.length > 0 ? {amount :price[0].value, denom : 
+            (price!== undefined  && price.length) > 0 ? {amount :price[0].value, denom : 
             price[0].denom ?? COINS_MINIMAL_DENOM
             } : undefined, );
             return tx ;     
