@@ -3,8 +3,8 @@ import { SigningCosmWasmClient } from '@cosmjs/cosmwasm-stargate';
 import { DirectSecp256k1HdWallet, DirectSecp256k1HdWalletOptions } from '@cosmjs/proto-signing';
 import { calculateFee, GasPrice } from "@cosmjs/stargate";
 import { NETWORK, DENOM, COINS_MINIMAL_DENOM} from '../config';
-import { getItemsCount } from './query';
-import { Collection, Item, CollectionId  } from '../models';
+import { getItemsCount, getCollection } from './query';
+import { Collection, Item, CollectionInfo  } from '../models';
 import { COLLECTION_CONTRACT_ADDR } from '../config';
 import { randomNumber } from '../utils';
 
@@ -19,14 +19,22 @@ export const walletFromMnemonic = async (mnemonic: string, options: Partial<Dire
 
 type SigningClient = SigningArchwayClient | SigningCosmWasmClient;
 
-const execute = async (msg : any,  walletAddress : string , 
-    client : SigningClient, contractAddress : string = COLLECTION_CONTRACT_ADDR  ) : Promise<string|Error> =>{
+const execute = async (msg : any,  
+    walletAddress : string , 
+    client : SigningClient, 
+    required_fund? : { amount: number, denom : string}, 
+    contractAddress : string = COLLECTION_CONTRACT_ADDR  ) : Promise<string|Error> =>{
 
-    let gasPrice :any = GasPrice.fromString('0.002' + COINS_MINIMAL_DENOM);
+    let gasPrice :any = GasPrice.fromString('0.005' + COINS_MINIMAL_DENOM);
     
     let txFee = calculateFee(300_000, gasPrice);
 
-    let tx = await client.execute(walletAddress, contractAddress, msg, txFee);
+    let _msg = required_fund ? {...msg, funds: [{
+        denom: required_fund.denom,
+        amount: required_fund.amount, 
+      }]} : msg ;
+
+    let tx = await client.execute(walletAddress, contractAddress, _msg, txFee);
 
     return tx.transactionHash; 
 
@@ -35,7 +43,6 @@ const execute = async (msg : any,  walletAddress : string ,
 let defaultSigningClientOptions : any =  { gasPrice: `0.005${DENOM}` };
 
 export const createSigningArchwayClient = async ( wallet : DirectSecp256k1HdWallet ) : Promise<SigningArchwayClient> => {
-
 
     const client = await SigningArchwayClient.connectWithSigner(NETWORK.endpoint, wallet, {
         ...defaultSigningClientOptions,
@@ -132,29 +139,53 @@ export const createItem = async (item : Item , walletAddress : string, client : 
 }
 
 
-export const randomMintItem = async (collection_id : CollectionId, 
+export const randomMintItem = async (collection_info : CollectionInfo, 
 walletAddress : string, client : SigningClient, queryHandler? : any  ) : Promise<string|Error> =>{
 
     try {
 
+
+        let coll = await getCollection({ owner :
+            collection_info.collection_owner, 
+            name :
+            collection_info.collection_name, 
+            symbol :
+            collection_info.collection_symbol},queryHandler);
+        
+        if (coll === undefined) {
+            return new Error("Collection NOT found!");
+        }
+
+        let price_type = collection_info.price_type ?? 1;
+
+        let price = coll.prices.filter((p)=>{
+            p.price_type === price_type;
+        });
+
+
+
         let cnt = await getItemsCount({
             owner :
-            collection_id.collection_owner, 
+            collection_info.collection_owner, 
             collection_name :
-            collection_id.collection_name, 
+            collection_info.collection_name, 
             collection_symbol :
-            collection_id.collection_symbol}, queryHandler);
+            collection_info.collection_symbol}, queryHandler);
 
         if (cnt > 0) {
 
             let seed = randomNumber(0, 248000);
   
             const msg = {
-                mint_item: {seed: `${seed}`, owner: collection_id.collection_owner,
-                collection_name : collection_id.collection_name, collection_symbol : collection_id.collection_symbol },
+                mint_item: {seed: `${seed}`, owner: collection_info.collection_owner,
+                collection_name : collection_info.collection_name, collection_symbol : 
+                collection_info.collection_symbol },
             };
 
-            const tx = await execute(msg, walletAddress, client);
+            const tx = await execute(msg, walletAddress, client, 
+            price.length > 0 ? {amount :price[0].value, denom : 
+            price[0].denom ?? COINS_MINIMAL_DENOM
+            } : undefined, );
             return tx ;     
      
     
@@ -171,26 +202,24 @@ walletAddress : string, client : SigningClient, queryHandler? : any  ) : Promise
 }
 
 
-export const mintItemByName = async (collection_id : CollectionId, name : string, 
+export const mintItemByName = async (colection_info : CollectionInfo, name : string, 
     walletAddress : string, client : SigningClient, queryHandler? : any  ) : Promise<string|Error> =>{
 
     try {
 
-        const contractAddress = COLLECTION_CONTRACT_ADDR;
-
         let cnt = await getItemsCount({
             owner :
-            collection_id.collection_owner, 
+            colection_info.collection_owner, 
             collection_name :
-            collection_id.collection_name, 
+            colection_info.collection_name, 
             collection_symbol :
-            collection_id.collection_symbol}, queryHandler);
+            colection_info.collection_symbol}, queryHandler);
 
         if (cnt > 0) {
 
             const msg = {
-                mint_item_by_name: {name: name , owner: collection_id.collection_owner,
-                collection_name : collection_id.collection_name, collection_symbol : collection_id.collection_symbol },
+                mint_item_by_name: {name: name , owner: colection_info.collection_owner,
+                collection_name : colection_info.collection_name, collection_symbol : colection_info.collection_symbol },
             };
     
             const tx = await execute(msg, walletAddress, client);

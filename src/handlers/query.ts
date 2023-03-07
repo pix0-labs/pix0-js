@@ -26,6 +26,19 @@ const query = async (msg : any , queryHandler? : any ) : Promise<any> =>{
 }
 
 
+export const getCollection = async (msg : {owner : string, name : string, symbol : string}, 
+    queryHandler? : any  ) :Promise<Collection> =>{
+
+    const _msg = {
+        get_collection: msg,
+    };
+    
+    const res = await query(_msg, queryHandler);
+
+    return res.collection;
+}
+
+
 
 export const getCollections = async (msg : {owner : string, start_after? : string, limit? : number}, 
     queryHandler? : any  ) :Promise<Collection[]> =>{
