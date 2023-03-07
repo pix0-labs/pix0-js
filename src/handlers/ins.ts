@@ -162,7 +162,7 @@ walletAddress : string, client : SigningClient, queryHandler? : any  ) : Promise
             p.price_type === price_type;
         });
 
-
+        console.log("price.for.item:", price);
 
         let cnt = await getItemsCount({
             owner :

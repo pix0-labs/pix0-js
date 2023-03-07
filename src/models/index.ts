@@ -32,7 +32,7 @@ export interface CollectionInfo {
     
     collection_symbol: string,
 
-    price_type? : string, 
+    price_type? : number, 
 
 }
 
