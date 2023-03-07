@@ -145,14 +145,12 @@ walletAddress : string, client : SigningClient, queryHandler? : any  ) : Promise
             collection_symbol :
             collection_id.collection_symbol}, queryHandler);
 
-        console.log("queryCollecitemItems.cnt::", cnt);
-            
         if (cnt > 0) {
 
-            let idx = randomNumber(0, (cnt - 1));
+            let seed = randomNumber(0, 248000);
   
             const msg = {
-                mint_item: {index: `${idx}`, owner: collection_id.collection_owner,
+                mint_item: {seed: `${seed}`, owner: collection_id.collection_owner,
                 collection_name : collection_id.collection_name, collection_symbol : collection_id.collection_symbol },
             };
 
