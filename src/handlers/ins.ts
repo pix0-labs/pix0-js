@@ -1,6 +1,6 @@
 import { SigningArchwayClient } from '@archwayhq/arch3.js';
 import { SigningCosmWasmClient } from '@cosmjs/cosmwasm-stargate';
-import { DirectSecp256k1HdWallet, DirectSecp256k1HdWalletOptions } from '@cosmjs/proto-signing';
+import { Coin, DirectSecp256k1HdWallet, DirectSecp256k1HdWalletOptions } from '@cosmjs/proto-signing';
 import { calculateFee, GasPrice } from "@cosmjs/stargate";
 import { NETWORK, DENOM, COINS_MINIMAL_DENOM} from '../config';
 import { getItemsCount, getCollection } from './query';
@@ -29,12 +29,11 @@ const execute = async (msg : any,
     
     let txFee = calculateFee(300_000, gasPrice);
 
-    let _msg = required_fund ? {...msg, funds: [{
-        denom: required_fund.denom,
-        amount: required_fund.amount, 
-      }]} : msg ;
+    let coin : Coin|undefined = required_fund ? {amount: `${required_fund.amount}`, 
+    denom : required_fund.denom} :
+    undefined;
 
-    let tx = await client.execute(walletAddress, contractAddress, _msg, txFee);
+    let tx = await client.execute(walletAddress, contractAddress, msg, txFee, undefined, [coin]);
 
     return tx.transactionHash; 
 
@@ -157,16 +156,13 @@ walletAddress : string, client : SigningClient, queryHandler? : any  ) : Promise
             return new Error(`Collection "${JSON.stringify(msg)}" NOT found!`);
         }
 
-        let price_type = collection_info.price_type ?? 1;
+        let _price_type = collection_info.price_type ?? 1;
 
-        let price : PriceType[]|undefined = 
-        coll.prices !== undefined && coll.prices !== null 
-        ? coll.prices.filter((p)=>{
-            p.price_type === price_type;
-        }) : undefined;
+        let price : PriceType[]|undefined = coll.prices?.filter((p)=>{
+            return p.price_type === _price_type;
+        }) ;
 
-        console.log("price.for.item:", price);
-
+       
         let cnt = await getItemsCount({
             owner :
             collection_info.collection_owner, 
