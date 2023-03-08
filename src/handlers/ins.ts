@@ -29,11 +29,12 @@ const execute = async (msg : any,
     
     let txFee = calculateFee(300_000, gasPrice);
 
-    let coin : Coin|undefined = required_fund ? {amount: `${required_fund.amount}`, 
-    denom : required_fund.denom} :
+    let coins : Coin[]|undefined = required_fund ? [{amount: `${required_fund.amount}`, 
+    denom : required_fund.denom}] :
     undefined;
 
-    let tx = await client.execute(walletAddress, contractAddress, msg, txFee, undefined, [coin]);
+    let tx = await client.execute(walletAddress, contractAddress, msg, txFee, undefined, 
+        coins );
 
     return tx.transactionHash; 
 
