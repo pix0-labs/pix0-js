@@ -2,11 +2,9 @@ import { ArchwayClient } from '@archwayhq/arch3.js';
 import { NETWORK , COLLECTION_CONTRACT_ADDR} from '../config';
 import { Collection, Item , Nft } from '../models';
 
-
-export const query = async (msg : any , queryHandler? : any ) : Promise<any> =>{
-
-    const contractAddress = COLLECTION_CONTRACT_ADDR;
-
+export const query = async (msg : any , queryHandler? : any, 
+    contractAddress : string = COLLECTION_CONTRACT_ADDR ) : Promise<any> =>{
+   
     if ( queryHandler ) {
 
         let result = await queryHandler(contractAddress, msg);
