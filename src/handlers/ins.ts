@@ -17,7 +17,7 @@ export const walletFromMnemonic = async (mnemonic: string, options: Partial<Dire
     return wallet;
 }
 
-type SigningClient = SigningArchwayClient | SigningCosmWasmClient;
+export type SigningClient = SigningArchwayClient | SigningCosmWasmClient;
 
 export const execute = async (msg : any,  
     walletAddress : string , 
