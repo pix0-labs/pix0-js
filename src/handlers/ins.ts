@@ -19,7 +19,7 @@ export const walletFromMnemonic = async (mnemonic: string, options: Partial<Dire
 
 type SigningClient = SigningArchwayClient | SigningCosmWasmClient;
 
-const execute = async (msg : any,  
+export const execute = async (msg : any,  
     walletAddress : string , 
     client : SigningClient, 
     required_fund? : { amount: number, denom : string}, 

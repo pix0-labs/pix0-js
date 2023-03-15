@@ -3,7 +3,7 @@ import { NETWORK , COLLECTION_CONTRACT_ADDR} from '../config';
 import { Collection, Item , Nft } from '../models';
 
 
-const query = async (msg : any , queryHandler? : any ) : Promise<any> =>{
+export const query = async (msg : any , queryHandler? : any ) : Promise<any> =>{
 
     const contractAddress = COLLECTION_CONTRACT_ADDR;
 
