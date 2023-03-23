@@ -1,6 +1,6 @@
 {
-  "name": "pix0-js-arch-test",
-  "version": "1.0.44",
+  "name": "pix0-collection-js",
+  "version": "1.0.45",
   "description": "This is the JS Library that contains the required JS functions to interact with Pix0 NFT Collection Contract",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
