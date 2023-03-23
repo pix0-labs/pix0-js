@@ -1,62 +1,10 @@
-import { SigningArchwayClient } from '@archwayhq/arch3.js';
-import { SigningCosmWasmClient } from '@cosmjs/cosmwasm-stargate';
-import { Coin, DirectSecp256k1HdWallet, DirectSecp256k1HdWalletOptions } from '@cosmjs/proto-signing';
-import { calculateFee, GasPrice } from "@cosmjs/stargate";
-import { NETWORK, DENOM, COINS_MINIMAL_DENOM} from '../config';
+import { NETWORK, DENOM, COINS_MINIMAL_DENOM} from 'pix0-common-js';
 import { getItemsCount, getCollection } from './query';
 import { Collection, Item, CollectionInfo, PriceType  } from '../models';
 import { COLLECTION_CONTRACT_ADDR } from '../config';
 import { randomNumber } from '../utils';
+import { execute, SigningClient } from 'pix0-common-js';
 
-
-
-export const walletFromMnemonic = async (mnemonic: string, options: Partial<DirectSecp256k1HdWalletOptions> =
-    { prefix: NETWORK.prefix }) : Promise<DirectSecp256k1HdWallet>=>{
-
-    const wallet = await DirectSecp256k1HdWallet.fromMnemonic(mnemonic, options);
-    return wallet;
-}
-
-export type SigningClient = SigningArchwayClient | SigningCosmWasmClient;
-
-export const execute = async (msg : any,  
-    walletAddress : string , 
-    client : SigningClient, 
-    required_fund? : { amount: number, denom : string}, 
-    contractAddress : string = COLLECTION_CONTRACT_ADDR  ) : Promise<string|Error> =>{
-
-    let gasPrice :any = GasPrice.fromString('0.005' + COINS_MINIMAL_DENOM);
-    
-    let txFee = calculateFee(300_000, gasPrice);
-
-    let coins : Coin[]|undefined = required_fund ? [{amount: `${required_fund.amount}`, 
-    denom : required_fund.denom}] :
-    undefined;
-
-    let tx = await client.execute(walletAddress, contractAddress, msg, txFee, undefined, 
-        coins );
-
-    return tx.transactionHash; 
-
-}
-
-let defaultSigningClientOptions : any =  { gasPrice: `0.005${DENOM}` };
-
-export const createSigningArchwayClient = async ( wallet : DirectSecp256k1HdWallet ) : Promise<SigningArchwayClient> => {
-
-    const client = await SigningArchwayClient.connectWithSigner(NETWORK.endpoint, wallet, {
-        ...defaultSigningClientOptions,
-        prefix: NETWORK.prefix,
-    });
-
-    return client;
-}
-
-export const createSigningClient = async ( mnemonic : string  ) : Promise<SigningArchwayClient> => {
-
-    let wallet = await walletFromMnemonic(mnemonic);
-    return createSigningArchwayClient(wallet);
-}
 
 
 export const createCollection = async (collection : Collection, walletAddress : string, client : SigningClient  ) : Promise<string|Error> =>{
@@ -67,7 +15,7 @@ export const createCollection = async (collection : Collection, walletAddress : 
             create_collection: { collection : collection},
         };
 
-        const tx = await execute(msg, walletAddress, client);
+        const tx = await execute(msg, walletAddress, client, undefined, COLLECTION_CONTRACT_ADDR);
         return tx ; 
 
     }
@@ -87,7 +35,7 @@ export const updateCollection = async (collection : Collection, walletAddress : 
             update_collection: { collection : collection},
         };
 
-       const tx = await execute(msg, walletAddress, client);
+       const tx = await execute(msg, walletAddress, client, undefined, COLLECTION_CONTRACT_ADDR);
         
        return tx ; 
         
@@ -109,7 +57,7 @@ export const removeCollection = async (collection : {name : string,
             remove_collection: { name : collection.name, symbol : collection.symbol},
         };
 
-        const tx = await execute(msg, walletAddress, client);
+        const tx = await execute(msg, walletAddress, client, undefined, COLLECTION_CONTRACT_ADDR);
         
         return tx ;     
     }
@@ -128,7 +76,7 @@ export const createItem = async (item : Item , walletAddress : string, client : 
             create_item: {item : item},
         };
 
-        const tx = await execute(msg, walletAddress, client);
+        const tx = await execute(msg, walletAddress, client, undefined, COLLECTION_CONTRACT_ADDR);
         return tx ;     
  
     }
@@ -185,7 +133,7 @@ walletAddress : string, client : SigningClient, queryHandler? : any  ) : Promise
             const tx = await execute(msg, walletAddress, client, 
             (price!== undefined  && price.length) > 0 ? {amount :price[0].value, denom : 
             price[0].denom ?? COINS_MINIMAL_DENOM
-            } : undefined, );
+            } : undefined, COLLECTION_CONTRACT_ADDR );
             return tx ;     
      
     
@@ -222,7 +170,8 @@ export const mintItemByName = async (colection_info : CollectionInfo, name : str
                 collection_name : colection_info.collection_name, collection_symbol : colection_info.collection_symbol },
             };
     
-            const tx = await execute(msg, walletAddress, client);
+            const tx = await execute(msg, walletAddress, client, undefined, 
+                COLLECTION_CONTRACT_ADDR);
             return tx ;     
         }
         else {

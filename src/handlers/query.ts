@@ -1,28 +1,7 @@
 import { ArchwayClient } from '@archwayhq/arch3.js';
-import { NETWORK , COLLECTION_CONTRACT_ADDR} from '../config';
+import { COLLECTION_CONTRACT_ADDR} from '../config';
 import { Collection, Item , Nft } from '../models';
-
-export const query = async (msg : any , queryHandler? : any, 
-    contractAddress : string = COLLECTION_CONTRACT_ADDR ) : Promise<any> =>{
-   
-    if ( queryHandler ) {
-
-        let result = await queryHandler(contractAddress, msg);
-        return result;
-    }
-    else {
-
-        const client = await ArchwayClient.connect(NETWORK.endpoint);
-
-        const result = await client.queryContractSmart(
-            contractAddress,
-            msg
-        );
-
-        return result;
-    }
-}
-
+import { query } from 'pix0-common-js';
 
 export const getCollection = async (msg : {owner : string, name : string, symbol : string}, 
     queryHandler? : any  ) :Promise<Collection> =>{
@@ -31,7 +10,7 @@ export const getCollection = async (msg : {owner : string, name : string, symbol
         get_collection: msg,
     };
     
-    const res = await query(_msg, queryHandler);
+    const res = await query(_msg, queryHandler, COLLECTION_CONTRACT_ADDR);
 
     return res.collection;
 }
@@ -45,7 +24,7 @@ export const getCollections = async (msg : {owner : string, start_after? : strin
         get_collections: {owner : msg.owner, start_after : msg.start_after, limit : msg.limit },
     };
     
-    const collections = await query(_msg, queryHandler);
+    const collections = await query(_msg, queryHandler, COLLECTION_CONTRACT_ADDR);
 
     return collections.collections;
 }
@@ -63,7 +42,7 @@ export const getItems = async (msg : {owner : string, collection_name : string, 
     };
     
     const items_res = await query(
-        _msg, queryHandler 
+        _msg, queryHandler , COLLECTION_CONTRACT_ADDR
     );
 
     return items_res.items;
@@ -81,7 +60,7 @@ export const getItemsCount = async (msg : {owner : string, collection_name : str
     };
     
     const itm_cnt_resp = await query(
-        _msg, queryHandler 
+        _msg, queryHandler , COLLECTION_CONTRACT_ADDR
     );
 
     return itm_cnt_resp.count;
@@ -97,7 +76,7 @@ export const getMintedTokensByOwner = async (msg : {owner : string,  start_after
         start_after : msg.start_after, limit : msg.limit },
     };
     
-    const tok_resp = await query(_msg, queryHandler);
+    const tok_resp = await query(_msg, queryHandler,COLLECTION_CONTRACT_ADDR);
 
     return tok_resp.tokens;
 }
@@ -110,7 +89,7 @@ export const getNftTokenInfo = async (token_id : string, queryHandler? : any ) :
         nft_token_info: {token_id : token_id },
     };
     
-    const tok_resp = await query(msg, queryHandler);
+    const tok_resp = await query(msg, queryHandler,COLLECTION_CONTRACT_ADDR);
 
     return {token_uri : tok_resp.token_uri, extension : tok_resp.extension};
 }

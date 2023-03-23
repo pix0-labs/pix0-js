@@ -1,6 +1,6 @@
 {
   "name": "pix0-collection-js",
-  "version": "1.0.45",
+  "version": "1.0.46",
   "description": "This is the JS Library that contains the required JS functions to interact with Pix0 NFT Collection Contract",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -15,9 +15,7 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "@archwayhq/arch3.js": "^0.1.0",
-    "@cosmjs/proto-signing": "^0.29.5",
-    "@cosmjs/stargate": "^0.29.5"
+    "pix0-common-js":"file:../pix0-common-js"
   },
   "scripts": {
     "build": "tsc",
