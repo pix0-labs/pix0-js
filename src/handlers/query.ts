@@ -1,4 +1,3 @@
-import { ArchwayClient } from '@archwayhq/arch3.js';
 import { COLLECTION_CONTRACT_ADDR} from '../config';
 import { Collection, Item , Nft } from '../models';
 import { query } from 'pix0-common-js';
