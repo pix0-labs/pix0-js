@@ -149,8 +149,8 @@ walletAddress : string, client : SigningClient, queryHandler? : any  ) : Promise
             };
 
             const tx = await execute(msg, walletAddress, client, 
-            (price!== undefined  && price.length) > 0 ? {amount :price[0].value, denom : 
-            price[0].denom ?? COINS_MINIMAL_DENOM
+            (price!== undefined  && price.length) > 0 ? {amount : parseInt(price[0].value.amount), denom : 
+            price[0].value.denom ?? COINS_MINIMAL_DENOM
             } : undefined, COLLECTION_CONTRACT_ADDR );
             return tx ;     
      

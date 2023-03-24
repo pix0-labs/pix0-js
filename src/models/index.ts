@@ -1,3 +1,5 @@
+import { Coin } from "pix0-common-js";
+
 export interface Attribute {
 
     name : string,
@@ -15,9 +17,7 @@ export interface PriceType {
 
     price_type : number , 
 
-    value : number , 
-
-    denom? : string, 
+    value : Coin , 
 
     date_start? : number,
 
