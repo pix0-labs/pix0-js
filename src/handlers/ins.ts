@@ -1,21 +1,36 @@
-import { NETWORK, DENOM, COINS_MINIMAL_DENOM} from 'pix0-common-js';
-import { getItemsCount, getCollection } from './query';
+import {COINS_MINIMAL_DENOM} from 'pix0-common-js';
+import { getItemsCount, getCollection , getContractInfo} from './query';
 import { Collection, Item, CollectionInfo, PriceType  } from '../models';
 import { COLLECTION_CONTRACT_ADDR } from '../config';
 import { randomNumber } from '../utils';
 import { execute, SigningClient } from 'pix0-common-js';
 
 
+export const getRequiredFee =async (feeName : string, queryHandler? : any) : Promise<{
+    amount : number, denom : string, 
+}> =>{
 
-export const createCollection = async (collection : Collection, walletAddress : string, client : SigningClient  ) : Promise<string|Error> =>{
+    let cinfo = await getContractInfo(queryHandler);
+
+    let fee0 = cinfo.fees.filter(f=>{return f.name === feeName})[0];
+
+    let fee = fee0 ?  {amount : parseInt(fee0.value.amount), denom : fee0.value.denom} : {amount : 10000, denom : "uconst"};
+
+    return fee ;
+}
+
+export const createCollection = async (collection : Collection, walletAddress : string, client : SigningClient ,
+    queryHandler? : any  ) : Promise<string|Error> =>{
 
     try {
+
+        let fee = await getRequiredFee("CREATE_COLLECTION_FEE", queryHandler);
 
         const msg = {
             create_collection: { collection : collection},
         };
 
-        const tx = await execute(msg, walletAddress, client, undefined, COLLECTION_CONTRACT_ADDR);
+        const tx = await execute(msg, walletAddress, client, fee, COLLECTION_CONTRACT_ADDR);
         return tx ; 
 
     }
@@ -68,15 +83,18 @@ export const removeCollection = async (collection : {name : string,
 }
 
 
-export const createItem = async (item : Item , walletAddress : string, client : SigningClient  ) : Promise<string|Error> =>{
+export const createItem = async (item : Item , walletAddress : string, client : SigningClient,
+    queryHandler? : any   ) : Promise<string|Error> =>{
 
     try {
+
+        let fee = await getRequiredFee("CREATE_ITEM_FEE", queryHandler);
 
         const msg = {
             create_item: {item : item},
         };
 
-        const tx = await execute(msg, walletAddress, client, undefined, COLLECTION_CONTRACT_ADDR);
+        const tx = await execute(msg, walletAddress, client, fee, COLLECTION_CONTRACT_ADDR);
         return tx ;     
  
     }
@@ -178,6 +196,44 @@ export const mintItemByName = async (colection_info : CollectionInfo, name : str
             return new Error("Collection has NO more items for minting");
         }
       
+    }
+    catch(e : any) {
+
+        return e;
+    }
+}
+
+
+export const transferNft = async (recipient : string, token_id : string ,walletAddress : string,client : SigningClient  ) : Promise<string|Error> =>{
+
+    try {
+
+        const msg = {
+            transfer_nft: {recipient : recipient, token_id : token_id},
+        };
+
+        const tx = await execute(msg, walletAddress, client, undefined, COLLECTION_CONTRACT_ADDR);
+        return tx ;     
+ 
+    }
+    catch(e : any) {
+
+        return e;
+    }
+}
+
+
+export const burnNft = async (token_id : string ,walletAddress : string,client : SigningClient  ) : Promise<string|Error> =>{
+
+    try {
+
+        const msg = {
+            burn_nft: {token_id : token_id},
+        };
+
+        const tx = await execute(msg, walletAddress, client, undefined, COLLECTION_CONTRACT_ADDR);
+        return tx ;     
+ 
     }
     catch(e : any) {
 

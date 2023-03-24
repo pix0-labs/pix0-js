@@ -1,6 +1,6 @@
 import { COLLECTION_CONTRACT_ADDR} from '../config';
 import { Collection, Item , Nft } from '../models';
-import { query } from 'pix0-common-js';
+import { query, LogInfo, ContractInfo} from 'pix0-common-js';
 
 export const getCollection = async (msg : {owner : string, name : string, symbol : string}, 
     queryHandler? : any  ) :Promise<Collection> =>{
@@ -91,4 +91,29 @@ export const getNftTokenInfo = async (token_id : string, queryHandler? : any ) :
     const tok_resp = await query(msg, queryHandler,COLLECTION_CONTRACT_ADDR);
 
     return {token_uri : tok_resp.token_uri, extension : tok_resp.extension};
+}
+
+
+
+export const getContractInfo = async (queryHandler? : any  ) :Promise<ContractInfo> =>{
+
+    const _msg = {
+        get_contract_info: {},
+    };
+    
+    const res = await query(_msg, queryHandler, COLLECTION_CONTRACT_ADDR);
+
+    return res.contract_info;
+}
+
+
+export const getLogInfo = async (queryHandler? : any  ) :Promise<LogInfo> =>{
+
+    const _msg = {
+        get_log_info: {},
+    };
+    
+    const res = await query(_msg, queryHandler, COLLECTION_CONTRACT_ADDR);
+
+    return res.info;
 }
