@@ -1,4 +1,4 @@
-import {COINS_MINIMAL_DENOM} from 'pix0-common-js';
+import {Coin} from 'pix0-common-js';
 import { getItemsCount, getCollection , getContractInfo} from './query';
 import { Collection, Item, CollectionInfo, PriceType  } from '../models';
 import { COLLECTION_CONTRACT_ADDR } from '../config';
@@ -6,15 +6,13 @@ import { randomNumber } from '../utils';
 import { execute, SigningClient } from 'pix0-common-js';
 
 
-export const getRequiredFee =async (feeName : string, queryHandler? : any) : Promise<{
-    amount : number, denom : string, 
-}> =>{
+export const getRequiredFee = async (feeName : string, queryHandler? : any) : Promise<Coin> =>{
 
     let cinfo = await getContractInfo(queryHandler);
 
     let fee0 = cinfo.fees.filter(f=>{return f.name === feeName})[0];
 
-    let fee = fee0 ?  {amount : parseInt(fee0.value.amount), denom : fee0.value.denom} : {amount : 10000, denom : "uconst"};
+    let fee  : Coin = fee0 ?  fee0.value : {amount : "10000", denom : "uconst"};
 
     return fee ;
 }
@@ -105,6 +103,21 @@ export const createItem = async (item : Item , walletAddress : string, client : 
 }
 
 
+
+export const getFeesForMinting = async (priceType? : PriceType, queryHandler? : any) : Promise<Coin[]> =>{
+
+    let mintingFee = await getRequiredFee("NFT_MINTING_FEE", queryHandler);
+
+    if (priceType) {
+        let mintingPrice = priceType.value;
+        return [mintingPrice, mintingFee];
+    }
+    else {
+        return [mintingFee];
+    }
+ 
+}
+
 export const randomMintItem = async (collection_info : CollectionInfo, 
 walletAddress : string, client : SigningClient, queryHandler? : any  ) : Promise<string|Error> =>{
 
@@ -129,6 +142,8 @@ walletAddress : string, client : SigningClient, queryHandler? : any  ) : Promise
             return p.price_type === _price_type;
         }) ;
 
+
+        let fees = await getFeesForMinting(price[0], queryHandler);
        
         let cnt = await getItemsCount({
             owner :
@@ -148,12 +163,8 @@ walletAddress : string, client : SigningClient, queryHandler? : any  ) : Promise
                 collection_info.collection_symbol },
             };
 
-            const tx = await execute(msg, walletAddress, client, 
-            (price!== undefined  && price.length) > 0 ? {amount : parseInt(price[0].value.amount), denom : 
-            price[0].value.denom ?? COINS_MINIMAL_DENOM
-            } : undefined, COLLECTION_CONTRACT_ADDR );
+            const tx = await execute(msg, walletAddress, client, fees, COLLECTION_CONTRACT_ADDR );
             return tx ;     
-     
     
         }
         else {
