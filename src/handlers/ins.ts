@@ -110,7 +110,12 @@ export const getFeesForMinting = async (priceType? : PriceType, queryHandler? : 
 
     if (priceType) {
         let mintingPrice = priceType.value;
-        return [mintingPrice, mintingFee];
+        let fees = [mintingPrice, mintingFee];
+        
+        console.log("fees:::", fees);
+        
+        return fees ;
+
     }
     else {
         return [mintingFee];
