@@ -127,12 +127,9 @@ walletAddress : string, client : SigningClient, queryHandler? : any  ) : Promise
     try {
 
 
-        let msg = { owner :
-            collection_info.collection_owner, 
-            name :
-            collection_info.collection_name, 
-            symbol :
-            collection_info.collection_symbol};
+        let msg = { owner :collection_info.collection_owner, 
+            name :collection_info.collection_name, 
+            symbol :collection_info.collection_symbol};
         let coll = await getCollection(msg,queryHandler);
         
         if (coll === undefined || coll === null ) {
@@ -158,7 +155,7 @@ walletAddress : string, client : SigningClient, queryHandler? : any  ) : Promise
 
         if (cnt > 0) {
 
-            let seed = randomNumber(0, 248000);
+            let seed = randomNumber(0, 256);
   
             const msg = {
                 mint_item: {seed: `${seed}`, owner: collection_info.collection_owner,
