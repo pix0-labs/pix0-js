@@ -1,6 +1,8 @@
 import { COLLECTION_CONTRACT_ADDR} from '../config';
 import { Collection, Item , Nft } from '../models';
-import { query, LogInfo, getRequiredFee, Coin} from 'pix0-common-js';
+import { query, LogInfo, getRequiredFee, Coin, 
+getLogInfo as commonLogInfo, getContractInfo as commonContractInfo,
+ContractInfo} from 'pix0-common-js';
 
 export const getCollection = async (msg : {owner : string, name : string, symbol : string}, 
     queryHandler? : any  ) :Promise<Collection> =>{
@@ -99,14 +101,17 @@ export const getNftTokenInfo = async (token_id : string, queryHandler? : any ) :
 
 export const getLogInfo = async (queryHandler? : any  ) :Promise<LogInfo> =>{
 
-    const _msg = {
-        get_log_info: {},
-    };
-    
-    const res = await query(_msg, queryHandler, COLLECTION_CONTRACT_ADDR);
-
-    return res.info;
+    return await commonLogInfo(COLLECTION_CONTRACT_ADDR, queryHandler);
 }
+
+
+
+export const getContractInfo = async (queryHandler? : any  ) :Promise<ContractInfo> =>{
+
+    return await commonContractInfo(COLLECTION_CONTRACT_ADDR, queryHandler);
+ }
+ 
+ 
 
 
 export const getCreateCollectionFee = async (queryHandler? : any) : Promise<Coin> =>{
