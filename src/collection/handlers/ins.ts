@@ -1,9 +1,10 @@
-import {Coin} from 'pix0-common-js';
+
+import { Coin } from '../../common/';
 import { getItemsCount, getCollection } from './query';
 import { Collection, Item, CollectionInfo, PriceType  } from '../models';
 import { COLLECTION_CONTRACT_ADDR } from '../config';
-import { randomNumber } from '../utils';
-import { execute, SigningClient } from 'pix0-common-js';
+import { randomNumber } from '../../utils';
+import { execute, SigningClient } from '../../common/';
 import { getCreateCollectionFee, getCreateItemFee, getNftMintingFee } from './query';
 
 

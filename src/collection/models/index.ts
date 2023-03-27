@@ -1,4 +1,4 @@
-import { Coin } from "pix0-common-js";
+import { Coin } from "../../common";
 
 export interface Attribute {
 
