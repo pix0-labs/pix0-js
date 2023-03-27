@@ -28,7 +28,7 @@ export const createCollection = async (collection : Collection, walletAddress : 
             create_collection: { collection : collection},
         };
 
-        const tx = await execute(msg, walletAddress, client, fee, COLLECTION_CONTRACT_ADDR);
+        const tx = await execute(msg, walletAddress, client, fee, COLLECTION_CONTRACT_ADDR, "Create Collection");
         return tx ; 
 
     }
@@ -48,7 +48,7 @@ export const updateCollection = async (collection : Collection, walletAddress : 
             update_collection: { collection : collection},
         };
 
-       const tx = await execute(msg, walletAddress, client, undefined, COLLECTION_CONTRACT_ADDR);
+       const tx = await execute(msg, walletAddress, client, undefined, COLLECTION_CONTRACT_ADDR, "Update Collection");
         
        return tx ; 
         
@@ -70,7 +70,7 @@ export const removeCollection = async (collection : {name : string,
             remove_collection: { name : collection.name, symbol : collection.symbol},
         };
 
-        const tx = await execute(msg, walletAddress, client, undefined, COLLECTION_CONTRACT_ADDR);
+        const tx = await execute(msg, walletAddress, client, undefined, COLLECTION_CONTRACT_ADDR, "Remove Collection");
         
         return tx ;     
     }
@@ -92,7 +92,7 @@ export const createItem = async (item : Item , walletAddress : string, client : 
             create_item: {item : item},
         };
 
-        const tx = await execute(msg, walletAddress, client, fee, COLLECTION_CONTRACT_ADDR);
+        const tx = await execute(msg, walletAddress, client, fee, COLLECTION_CONTRACT_ADDR, "Create Item");
         return tx ;     
  
     }
@@ -136,34 +136,33 @@ walletAddress : string, client : SigningClient, queryHandler? : any  ) : Promise
             return new Error(`Collection "${JSON.stringify(msg)}" NOT found!`);
         }
 
-        let _price_type = collection_info.price_type ?? 1;
-
-        let price : PriceType[]|undefined = coll.prices?.filter((p)=>{
-            return p.price_type === _price_type;
-        }) ;
-
-
-        let fees = await getFeesForMinting(price[0], queryHandler);
-       
         let cnt = await getItemsCount({
-            owner :
-            collection_info.collection_owner, 
-            collection_name :
-            collection_info.collection_name, 
-            collection_symbol :
-            collection_info.collection_symbol}, queryHandler);
+        owner :
+        collection_info.collection_owner, 
+        collection_name :
+        collection_info.collection_name, 
+        collection_symbol :
+        collection_info.collection_symbol}, queryHandler);
 
         if (cnt > 0) {
 
+            let _price_type = collection_info.price_type ?? 1;
+
+            let price : PriceType[]|undefined = coll.prices?.filter((p)=>{
+                return p.price_type === _price_type;
+            }) ;
+        
+            let fees = await getFeesForMinting(price[0], queryHandler);
+    
             let seed = randomNumber(0, 256);
-  
+
             const msg = {
                 mint_item: {seed: `${seed}`, owner: collection_info.collection_owner,
                 collection_name : collection_info.collection_name, collection_symbol : 
                 collection_info.collection_symbol },
             };
 
-            const tx = await execute(msg, walletAddress, client, fees, COLLECTION_CONTRACT_ADDR );
+            const tx = await execute(msg, walletAddress, client, fees, COLLECTION_CONTRACT_ADDR , "Mint NFT");
             return tx ;     
     
         }
@@ -179,28 +178,46 @@ walletAddress : string, client : SigningClient, queryHandler? : any  ) : Promise
 }
 
 
-export const mintItemByName = async (colection_info : CollectionInfo, name : string, 
+export const mintItemByName = async (collection_info : CollectionInfo, name : string, 
     walletAddress : string, client : SigningClient, queryHandler? : any  ) : Promise<string|Error> =>{
 
     try {
 
+        let msg = { owner :collection_info.collection_owner, 
+            name :collection_info.collection_name, 
+            symbol :collection_info.collection_symbol};
+        let coll = await getCollection(msg,queryHandler);
+        
+        if (coll === undefined || coll === null ) {
+            return new Error(`Collection "${JSON.stringify(msg)}" NOT found!`);
+        }
+
         let cnt = await getItemsCount({
             owner :
-            colection_info.collection_owner, 
+            collection_info.collection_owner, 
             collection_name :
-            colection_info.collection_name, 
+            collection_info.collection_name, 
             collection_symbol :
-            colection_info.collection_symbol}, queryHandler);
+            collection_info.collection_symbol}, queryHandler);
 
         if (cnt > 0) {
 
+            let _price_type = collection_info.price_type ?? 1;
+
+            let price : PriceType[]|undefined = coll.prices?.filter((p)=>{
+                return p.price_type === _price_type;
+            }) ;
+        
+            let fees = await getFeesForMinting(price[0], queryHandler);
+       
+
             const msg = {
-                mint_item_by_name: {name: name , owner: colection_info.collection_owner,
-                collection_name : colection_info.collection_name, collection_symbol : colection_info.collection_symbol },
+                mint_item_by_name: {name: name , owner: collection_info.collection_owner,
+                collection_name : collection_info.collection_name, collection_symbol : collection_info.collection_symbol },
             };
     
             const tx = await execute(msg, walletAddress, client, undefined, 
-                COLLECTION_CONTRACT_ADDR);
+                COLLECTION_CONTRACT_ADDR, "Mint Item By Name");
             return tx ;     
         }
         else {
@@ -223,7 +240,7 @@ export const transferNft = async (recipient : string, token_id : string ,walletA
             transfer_nft: {recipient : recipient, token_id : token_id},
         };
 
-        const tx = await execute(msg, walletAddress, client, undefined, COLLECTION_CONTRACT_ADDR);
+        const tx = await execute(msg, walletAddress, client, undefined, COLLECTION_CONTRACT_ADDR, "Transfer NFT");
         return tx ;     
  
     }
@@ -242,7 +259,7 @@ export const burnNft = async (token_id : string ,walletAddress : string,client :
             burn_nft: {token_id : token_id},
         };
 
-        const tx = await execute(msg, walletAddress, client, undefined, COLLECTION_CONTRACT_ADDR);
+        const tx = await execute(msg, walletAddress, client, undefined, COLLECTION_CONTRACT_ADDR, "Burn NFT");
         return tx ;     
  
     }
