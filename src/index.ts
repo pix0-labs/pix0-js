@@ -1,5 +1,6 @@
 export * from './common/handlers/acc';
 export * from './common/utils/';
+export * from './common/handlers/ins';
 export * from './utils/';
 export * from './collection/handlers/ins';
 export * from './collection/handlers/query';
