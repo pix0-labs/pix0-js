@@ -4,25 +4,15 @@ import { Collection, Item, CollectionInfo, PriceType  } from '../models';
 import { COLLECTION_CONTRACT_ADDR } from '../config';
 import { randomNumber } from '../utils';
 import { execute, SigningClient } from 'pix0-common-js';
+import { getCreateCollectionFee, getCreateItemFee, getNftMintingFee } from './query';
 
-
-export const getRequiredFee = async (feeName : string, queryHandler? : any) : Promise<Coin> =>{
-
-    let cinfo = await getContractInfo(queryHandler);
-
-    let fee0 = cinfo.fees.filter(f=>{return f.name === feeName})[0];
-
-    let fee  : Coin = fee0 ?  fee0.value : {amount : "10000", denom : "uconst"};
-
-    return fee ;
-}
 
 export const createCollection = async (collection : Collection, walletAddress : string, client : SigningClient ,
     queryHandler? : any  ) : Promise<string|Error> =>{
 
     try {
 
-        let fee = await getRequiredFee("CREATE_COLLECTION_FEE", queryHandler);
+        let fee = await getCreateCollectionFee(queryHandler);
 
         const msg = {
             create_collection: { collection : collection},
@@ -86,8 +76,8 @@ export const createItem = async (item : Item , walletAddress : string, client : 
 
     try {
 
-        let fee = await getRequiredFee("CREATE_ITEM_FEE", queryHandler);
-
+        let fee = await getCreateItemFee(queryHandler);
+        
         const msg = {
             create_item: {item : item},
         };
@@ -106,7 +96,7 @@ export const createItem = async (item : Item , walletAddress : string, client : 
 
 export const getFeesForMinting = async (priceType? : PriceType, queryHandler? : any) : Promise<Coin[]> =>{
 
-    let mintingFee = await getRequiredFee("NFT_MINTING_FEE", queryHandler);
+    let mintingFee = await getNftMintingFee(queryHandler);;
 
     if (priceType) {
         let mintingPrice = priceType.value;

@@ -1,6 +1,6 @@
 import { COLLECTION_CONTRACT_ADDR} from '../config';
 import { Collection, Item , Nft } from '../models';
-import { query, LogInfo, ContractInfo} from 'pix0-common-js';
+import { query, LogInfo, ContractInfo, Coin} from 'pix0-common-js';
 
 export const getCollection = async (msg : {owner : string, name : string, symbol : string}, 
     queryHandler? : any  ) :Promise<Collection> =>{
@@ -116,4 +116,31 @@ export const getLogInfo = async (queryHandler? : any  ) :Promise<LogInfo> =>{
     const res = await query(_msg, queryHandler, COLLECTION_CONTRACT_ADDR);
 
     return res.info;
+}
+
+export const getRequiredFee = async (feeName : string, queryHandler? : any) : Promise<Coin> =>{
+
+    let cinfo = await getContractInfo(queryHandler);
+
+    let fee0 = cinfo.fees.filter(f=>{return f.name === feeName})[0];
+
+    let fee  : Coin = fee0 ?  fee0.value : {amount : "10000", denom : "uconst"};
+
+    return fee ;
+}
+
+
+export const getCreateCollectionFee = async (queryHandler? : any) : Promise<Coin> =>{
+    return await getRequiredFee("CREATE_COLLECTION_FEE", queryHandler);
+}
+
+
+
+export const getCreateItemFee = async (queryHandler? : any) : Promise<Coin> =>{
+    return await getRequiredFee("CREATE_ITEM_FEE", queryHandler);
+}
+
+
+export const getNftMintingFee = async (queryHandler? : any) : Promise<Coin> =>{
+    return await getRequiredFee("NFT_MINTING_FEE", queryHandler);
 }
