@@ -1,6 +1,6 @@
 import { COLLECTION_CONTRACT_ADDR} from '../config';
 import { Collection, Item , Nft } from '../models';
-import { query, LogInfo, ContractInfo, Coin} from 'pix0-common-js';
+import { query, LogInfo, getRequiredFee, Coin} from 'pix0-common-js';
 
 export const getCollection = async (msg : {owner : string, name : string, symbol : string}, 
     queryHandler? : any  ) :Promise<Collection> =>{
@@ -95,16 +95,6 @@ export const getNftTokenInfo = async (token_id : string, queryHandler? : any ) :
 
 
 
-export const getContractInfo = async (queryHandler? : any  ) :Promise<ContractInfo> =>{
-
-    const _msg = {
-        get_contract_info: {},
-    };
-    
-    const res = await query(_msg, queryHandler, COLLECTION_CONTRACT_ADDR);
-
-    return res.contract_info;
-}
 
 
 export const getLogInfo = async (queryHandler? : any  ) :Promise<LogInfo> =>{
@@ -118,29 +108,18 @@ export const getLogInfo = async (queryHandler? : any  ) :Promise<LogInfo> =>{
     return res.info;
 }
 
-export const getRequiredFee = async (feeName : string, queryHandler? : any) : Promise<Coin> =>{
-
-    let cinfo = await getContractInfo(queryHandler);
-
-    let fee0 = cinfo.fees.filter(f=>{return f.name === feeName})[0];
-
-    let fee  : Coin = fee0 ?  fee0.value : {amount : "10000", denom : "uconst"};
-
-    return fee ;
-}
-
 
 export const getCreateCollectionFee = async (queryHandler? : any) : Promise<Coin> =>{
-    return await getRequiredFee("CREATE_COLLECTION_FEE", queryHandler);
+    return await getRequiredFee("CREATE_COLLECTION_FEE", COLLECTION_CONTRACT_ADDR, queryHandler);
 }
 
 
 
 export const getCreateItemFee = async (queryHandler? : any) : Promise<Coin> =>{
-    return await getRequiredFee("CREATE_ITEM_FEE", queryHandler);
+    return await getRequiredFee("CREATE_ITEM_FEE", COLLECTION_CONTRACT_ADDR, queryHandler);
 }
 
 
 export const getNftMintingFee = async (queryHandler? : any) : Promise<Coin> =>{
-    return await getRequiredFee("NFT_MINTING_FEE", queryHandler);
+    return await getRequiredFee("NFT_MINTING_FEE", COLLECTION_CONTRACT_ADDR, queryHandler);
 }

@@ -1,5 +1,5 @@
 import {Coin} from 'pix0-common-js';
-import { getItemsCount, getCollection , getContractInfo} from './query';
+import { getItemsCount, getCollection } from './query';
 import { Collection, Item, CollectionInfo, PriceType  } from '../models';
 import { COLLECTION_CONTRACT_ADDR } from '../config';
 import { randomNumber } from '../utils';
