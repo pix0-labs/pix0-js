@@ -32,6 +32,8 @@ export interface User {
 
     mobile? : string,
 
+    bio? : string, 
+
     preferences? : Preferences[],
 
     profile_image? : ProfileImage, 

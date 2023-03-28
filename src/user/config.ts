@@ -1,5 +1,6 @@
-export const USER_CONTRACT_ADDR = "archway1r33j9w6tf6670ctc6vu2ay2m4h0vs7aluwh587yjvgn0sezskr9s7wfml7";
+export const USER_CONTRACT_ADDR = "archway159qv7nqydd7pv4hfgugluarrtnh2sqjm48t684rwzmeshvp65vuqwh0fq8";
 
+//"archway1r33j9w6tf6670ctc6vu2ay2m4h0vs7aluwh587yjvgn0sezskr9s7wfml7";
 
 //"archway1w3vxnehps0zjamnhlrxc7rnqqq84cd8qn3ljpzmlcp6nyq09494sswwn8t";
 
