@@ -12,7 +12,7 @@ export const getUser = async (owner : string , queryHandler? : any  ) :Promise<U
     
     const res = await query(_msg, queryHandler, USER_CONTRACT_ADDR);
 
-    return res.mint_page;
+    return res.user;
 }
 
 export const getUsers = async (queryHandler? : any  ) :Promise<User[]> =>{
