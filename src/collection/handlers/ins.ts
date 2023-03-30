@@ -5,7 +5,7 @@ import { Collection, Item, CollectionInfo, PriceType  } from '../models';
 import { COLLECTION_CONTRACT_ADDR } from '../config';
 import { randomNumber } from '../../utils';
 import { execute, SigningClient } from '../../common/';
-import { getCreateCollectionFee, getCreateItemFee, getNftMintingFee } from './query';
+import { getCreateCollectionFee, getCreateItemFee, getNftMintingFee, getSimpleMintingFee} from './query';
 
 
 export const createCollection = async (collection : Collection, walletAddress : string, client : SigningClient ,
@@ -215,6 +215,29 @@ export const mintItemByName = async (collection_info : CollectionInfo, name : st
             return new Error("Collection has NO more items for minting");
         }
       
+    }
+    catch(e : any) {
+
+        return e;
+    }
+}
+
+
+export const simpleMint = async (item : Item , 
+walletAddress : string, client : SigningClient, queryHandler? : any  ) : Promise<string|Error> =>{
+
+    try {
+
+
+        let fee = await getSimpleMintingFee(queryHandler);
+
+    
+        const msg = {
+            simple_mint: {item : item },
+        };
+
+        const tx = await execute(msg, walletAddress, client, fee, COLLECTION_CONTRACT_ADDR , "Simple Mint NFT");
+        return tx ;       
     }
     catch(e : any) {
 
