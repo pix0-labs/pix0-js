@@ -147,5 +147,5 @@ export const getNftMintingFee = async (queryHandler? : any) : Promise<Coin> =>{
 
 
 export const getSimpleMintingFee = async (queryHandler? : any) : Promise<Coin> =>{
-    return await getRequiredFee("SIMPLE_MINT_FEE", COLLECTION_CONTRACT_ADDR, queryHandler);
+    return await getRequiredFee("SIMPLE_NFT_MINTING_FEE", COLLECTION_CONTRACT_ADDR, queryHandler);
 }
