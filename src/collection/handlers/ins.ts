@@ -223,17 +223,15 @@ export const mintItemByName = async (collection_info : CollectionInfo, name : st
 }
 
 
-export const simpleMint = async (item : Item , 
+export const simpleMint = async (item :{item : Item, token_uri? : string} , 
 walletAddress : string, client : SigningClient, queryHandler? : any  ) : Promise<string|Error> =>{
 
     try {
 
-
         let fee = await getSimpleMintingFee(queryHandler);
-
     
         const msg = {
-            simple_mint: {item : item },
+            simple_mint: {item : item.item, token_uri : item.token_uri },
         };
 
         const tx = await execute(msg, walletAddress, client, fee, COLLECTION_CONTRACT_ADDR , "Simple Mint NFT");

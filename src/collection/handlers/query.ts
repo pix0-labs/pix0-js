@@ -1,5 +1,5 @@
 import { COLLECTION_CONTRACT_ADDR} from '../config';
-import { Collection, Item , Nft } from '../models';
+import { Collection, Item , Nft, CollectionsWithParamsResponse } from '../models';
 import { query, LogInfo, getRequiredFee, Coin, 
 getLogInfo as commonLogInfo, getContractInfo as commonContractInfo,
 ContractInfo} from '../../common';
@@ -30,6 +30,21 @@ export const getCollections = async (msg : {owner : string, start_after? : strin
     return collections.collections;
 }
 
+
+
+export const getActiveCollections = async (msg : {keyword? : string, 
+    category? : string, 
+    start? : number, limit? : number}, 
+    queryHandler? : any  ) :Promise<CollectionsWithParamsResponse> =>{
+
+    const _msg = {
+        get_active_collections: msg,
+    };
+    
+    const resp = await query(_msg, queryHandler, COLLECTION_CONTRACT_ADDR);
+
+    return resp;
+}
 
 
 export const getItems = async (msg : {owner : string, collection_name : string, collection_symbol : string,

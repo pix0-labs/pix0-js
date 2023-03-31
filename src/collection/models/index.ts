@@ -169,3 +169,15 @@ export interface Nft {
 
     extension : Metadata,
 }
+
+
+export interface CollectionsWithParamsResponse {
+
+    collections : Collection[],
+
+    start? : number, 
+
+    limit? : number,
+
+    total? : number, 
+}
