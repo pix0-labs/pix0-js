@@ -1,6 +1,7 @@
 export * from './common/handlers/acc';
 export * from './common/utils/';
 export * from './common/handlers/ins';
+export * from './common/models';
 export * from './utils/';
 export * from './utils/enc';
 export * from './collection/handlers/ins';
