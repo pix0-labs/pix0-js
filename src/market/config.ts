@@ -1,0 +1,1 @@
+export const MARKET_CONTRACT_ADDR = "archway1nyq89sg0sfz22efy02n56pksuyglsxt77uy9w0wscqkn92eez98quc2y7r";
