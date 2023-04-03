@@ -30,7 +30,7 @@ export const testTransferFromEscrow = async (recipient :string,
             test_transfer_from_escrow: {recipient :recipient, coin : amount },
         };
 
-        const tx = await execute(msg, walletAddress, client, amount , MARKET_CONTRACT_ADDR, "Test Transfer From Escrow");
+        const tx = await execute(msg, walletAddress, client, undefined , MARKET_CONTRACT_ADDR, "Test Transfer From Escrow");
         return tx ; 
 
     }

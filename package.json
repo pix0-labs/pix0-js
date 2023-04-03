@@ -1,6 +1,6 @@
 {
   "name": "pix0-js",
-  "version": "1.0.83",
+  "version": "1.0.84",
   "description": "This is the JS Library that contains the required JS functions to interact with Pix0 Contracts",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
