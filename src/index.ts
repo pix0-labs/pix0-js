@@ -15,3 +15,4 @@ export * from './mint_page/handlers/query';
 export * from './mint_page/models';
 export * from './market/handlers/ins';
 export * from './market/handlers/query';
+export * from './market/models';
