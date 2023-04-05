@@ -1,6 +1,6 @@
 import { query, Coin } from "../../common";
 import { MARKET_CONTRACT_ADDR } from "../config";
-import { SellOffersWithParamsResponse, SimpleCollectionInfo, BuyOffersWithParamsResponse } from "../models";
+import { SellOffersWithParamsResponse, SimpleCollectionInfo, BuyOffersWithParamsResponse, SellOffer} from "../models";
 import { getRequiredFee } from "../../common";
 
 export const getBalanceOfEscrow = async (denom : String,
@@ -50,14 +50,14 @@ export const getSellOffersOf = async (
 
 export const getSellOfferById = async (
     offer_id : string , 
-    queryHandler? : any ) :Promise<SellOffersWithParamsResponse> =>{
+    queryHandler? : any ) :Promise<SellOffer|undefined> =>{
 
     const _msg = {
         get_sell_offer_by_id : { offer_id : offer_id} 
     };
     
     const resp = await query(_msg, queryHandler,MARKET_CONTRACT_ADDR);
-    return resp;
+    return resp.offer;
 }
 
 
