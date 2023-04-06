@@ -48,7 +48,7 @@ export const execute = async (msg : any,
 
     let coins : Coin[]|undefined =  convertToCoins(fees);
 
-    console.log("converted.coins:::", coins, "txFee:", txFee);
+    //console.log("converted.coins:::", coins, "txFee:", txFee);
 
     let tx = await client.execute(walletAddress, contractAddress, msg, 
         txFee, memo, coins );
@@ -59,11 +59,12 @@ export const execute = async (msg : any,
 
 let defaultSigningClientOptions : any =  { gasPrice: `0.005${DENOM}` };
 
-export const createSigningArchwayClient = async ( wallet : DirectSecp256k1HdWallet ) : Promise<SigningArchwayClient> => {
+export const createSigningArchwayClient = async ( wallet : DirectSecp256k1HdWallet,
+    endpoint : string = NETWORK.endpoint, prefix : string = NETWORK.prefix ) : Promise<SigningArchwayClient> => {
 
-    const client = await SigningArchwayClient.connectWithSigner(NETWORK.endpoint, wallet, {
+    const client = await SigningArchwayClient.connectWithSigner(endpoint, wallet, {
         ...defaultSigningClientOptions,
-        prefix: NETWORK.prefix,
+        prefix: prefix,
     });
 
     return client;
