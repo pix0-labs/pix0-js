@@ -3,7 +3,7 @@ import { NETWORK} from '../config';
 import { ContractInfo, Coin, LogInfo } from '../models';
 
 export const query = async (msg : any , queryHandler? : any, 
-    contractAddress : string = "" ) : Promise<any> =>{
+    contractAddress : string = "", endpoint : string = NETWORK.endpoint ) : Promise<any> =>{
    
     if ( queryHandler ) {
 
@@ -12,7 +12,7 @@ export const query = async (msg : any , queryHandler? : any,
     }
     else {
 
-        const client = await ArchwayClient.connect(NETWORK.endpoint);
+        const client = await ArchwayClient.connect(endpoint);
 
         const result = await client.queryContractSmart(
             contractAddress,
