@@ -70,9 +70,9 @@ export const createSigningArchwayClient = async ( wallet : DirectSecp256k1HdWall
     return client;
 }
 
-export const createSigningClient = async ( mnemonic : string  ) : Promise<SigningArchwayClient> => {
+export const createSigningClient = async ( mnemonic : string, endpoint : string = NETWORK.endpoint, prefix : string = NETWORK.prefix   ) : Promise<SigningArchwayClient> => {
 
     let wallet = await walletFromMnemonic(mnemonic);
-    return createSigningArchwayClient(wallet);
+    return createSigningArchwayClient(wallet, endpoint, prefix);
 }
 
