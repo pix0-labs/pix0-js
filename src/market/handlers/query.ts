@@ -1,6 +1,8 @@
 import { query, Coin } from "../../common";
 import { MARKET_CONTRACT_ADDR } from "../config";
-import { SellOffersWithParamsResponse, SimpleCollectionInfo, BuyOffersWithParamsResponse, SellOffer} from "../models";
+import { SellOffersWithParamsResponse, SimpleCollectionInfo, 
+    BuyOffersWithParamsResponse, SellOffer, 
+    CollectionIndexesWithParamsResponse, CollectionIndexResponse} from "../models";
 import { getRequiredFee } from "../../common";
 
 export const getBalanceOfEscrow = async (denom : String,
@@ -93,6 +95,33 @@ export const getBuyOffersBy = async (
     return resp;
 }
 
+
+
+
+export const getCollectionIndexes = async (
+    category? : string, start? : number, limit?: number, 
+    queryHandler? : any ) :Promise<CollectionIndexesWithParamsResponse> =>{
+
+    const _msg = {
+        get_collection_indexes : {category : category,
+            start : start, limit : limit } 
+    };
+    
+    const resp = await query(_msg, queryHandler,MARKET_CONTRACT_ADDR);
+    return resp;
+}
+
+
+export const getCollectionIndex = async (id : string, 
+    queryHandler? : any ) :Promise<CollectionIndexResponse> =>{
+
+    const _msg = {
+        get_collection_index : {id : id } 
+    };
+    
+    const resp = await query(_msg, queryHandler,MARKET_CONTRACT_ADDR);
+    return resp;
+}
 
 
 

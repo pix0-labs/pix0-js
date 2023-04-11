@@ -1,4 +1,5 @@
 import { Coin } from "../../common";
+import { Royalty } from "../../collection/models";
 
 export const SELL_STATUS_NEW : number = 1;
 
@@ -18,6 +19,18 @@ export interface SimpleCollectionInfo {
     collection_symbol : string, 
 
     category? : string,
+
+    royalties? : Royalty[], 
+}
+
+export interface CollectionIndex {
+
+    collection_info : SimpleCollectionInfo,
+
+    id : string, 
+
+    number_of_sell_offers : number, 
+
 }
 
 
@@ -81,4 +94,22 @@ export interface BuyOffersWithParamsResponse {
     limit? : number,
 
     total? : number, 
+}
+
+
+export interface CollectionIndexesWithParamsResponse {
+    
+    collection_indexes : CollectionIndex[],
+
+    total? : number,
+
+    start? : number,
+
+    limit? : number,
+}
+
+
+export interface CollectionIndexResponse {
+
+    collection_index? : CollectionIndex,
 }
