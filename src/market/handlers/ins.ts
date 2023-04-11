@@ -1,7 +1,8 @@
 import { Coin } from "../../common";
 import { execute, SigningClient } from '../../common/';
 import { MARKET_CONTRACT_ADDR } from "../config";
-import { SellOffer, BuyOffer } from "../models";
+import { SellOffer, BuyOffer, SimpleCollectionInfo } from "../models";
+import { Nft } from "../..//collection/models";
 import { getCreateSellOfferFee, getCreateBuyOfferFee } from "./query";
 
 export const testTransferToEscrow = async (amount : Coin, walletAddress : string, client : SigningClient ) : Promise<string|Error> =>{
@@ -20,6 +21,45 @@ export const testTransferToEscrow = async (amount : Coin, walletAddress : string
 
         return e;
     }
+}
+
+
+
+const obtainCollectionInfo = (nft : Nft ) : SimpleCollectionInfo|undefined=>{
+
+    try {
+
+        let collection_info : SimpleCollectionInfo =
+        JSON.parse(nft.extension.attributes?.filter(t=> {return t.trait_type === "collection-info"} )[0].value);
+
+        console.log("obtained.collection.info:",collection_info);
+
+        return collection_info;
+    }
+    catch (e : any){
+
+        console.log("obtainCollectionInfo.error::",e);
+        return undefined;
+    }
+   
+
+}
+
+export const createSellOfferFrom = async (param : {token_id : string, price : Coin, allowed_direct_buy : boolean,  nft : Nft},  
+    walletAddress : string, client : SigningClient,  queryHandler? : any  ) =>{
+
+
+    let sell_offer : SellOffer = {
+
+        token_id : param.token_id,
+        owner : walletAddress, 
+        allowed_direct_buy : param.allowed_direct_buy,
+        price : param.price,
+        status : 0, 
+        collection_info : obtainCollectionInfo(param.nft), 
+    };
+
+    return await createSellOffer(sell_offer, walletAddress, client, queryHandler);
 }
 
 
