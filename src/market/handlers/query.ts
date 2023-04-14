@@ -99,11 +99,14 @@ export const getBuyOffersBy = async (
 
 
 export const getCollectionIndexes = async (
-    category? : string, start? : number, limit?: number, 
+    category? : string, 
+    minNumOfSalesOffer? : number, 
+    start? : number, limit?: number, 
     queryHandler? : any ) :Promise<CollectionIndexesWithParamsResponse> =>{
 
     const _msg = {
         get_collection_indexes : {category : category,
+            min_num_of_sales_offer: minNumOfSalesOffer,
             start : start, limit : limit } 
     };
     
