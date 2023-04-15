@@ -1,1 +1,2 @@
-export const MARKET_CONTRACT_ADDR = "archway1nyq89sg0sfz22efy02n56pksuyglsxt77uy9w0wscqkn92eez98quc2y7r";
+export const MARKET_CONTRACT_ADDR = "archway1rhmlhr3shrytqnlx4and676gprjm67z7zcc5u278fuyc4zr7cf5srrx8d8";
+//"archway1nyq89sg0sfz22efy02n56pksuyglsxt77uy9w0wscqkn92eez98quc2y7r";

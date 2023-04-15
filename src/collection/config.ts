@@ -1,4 +1,6 @@
-export const COLLECTION_CONTRACT_ADDR = "archway1us2ru2d5fr6xjjmw42hg8hl7869gjzhc3ednc0shkq4dmcfvygeshqhq04";
+export const COLLECTION_CONTRACT_ADDR =  "archway1nx4h3myn4azsy9mqjfnz57uvjysv9pwhgn5ggc2l6tlh2y5cx9uquhh0rd";
+
+//"archway1us2ru2d5fr6xjjmw42hg8hl7869gjzhc3ednc0shkq4dmcfvygeshqhq04";
 
 //"archway10jepndn2m6w5m0z2kxl8ccetluacsf0v55x5y47xuhjvg2zsz95q5wg8mm";
 
