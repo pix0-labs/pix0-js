@@ -1,6 +1,9 @@
-export const MARKET_CONTRACT_ADDR = "archway1l0etksrwvxelq6pvnqeyu4afurhrkspzyynwrqx47chzdtk634ssgr68f9";
+export const MARKET_CONTRACT_ADDR = 
+"archway1ax9qpz4qwg23k9kymms3hx87q7vwxa0e69cytly8mpkz2h9mun6swprawf";
 
 //"archway198hfms86n35ughlrvwt4jvzavhzz632eh9tcjfa2qnu3223khpuqwm8cze";
+
+//"archway1l0etksrwvxelq6pvnqeyu4afurhrkspzyynwrqx47chzdtk634ssgr68f9";
 
 //"archway1rv54c7z5fd5gzrc9af60467uj6q6nxgn2vpzeq3pmm4ws5d6la9quae6s8";
 
