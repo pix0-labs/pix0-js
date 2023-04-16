@@ -48,6 +48,8 @@ export interface SellOffer {
 
      allowed_direct_buy : boolean,
 
+     contract_addr : string, 
+
      status : number, 
 
      deal_close_type? : number , 
