@@ -42,13 +42,15 @@ export const execute = async (msg : any,
     contractAddress : string = "",
     memo? : string   ) : Promise<string|Error> =>{
 
-    let gasPrice :any = GasPrice.fromString('0.005' + COINS_MINIMAL_DENOM);
+    let gasPrice :any = GasPrice.fromString('0.02' + COINS_MINIMAL_DENOM);
+
+    //GasPrice.fromString('0.005' + COINS_MINIMAL_DENOM);
 
     let txFee = calculateFee(310_000, gasPrice);
 
     let coins : Coin[]|undefined =  convertToCoins(fees);
 
-    //console.log("converted.coins:::", coins, "txFee:", txFee);
+    console.log("converted.coins:::", coins, "txFee:", txFee);
 
     let tx = await client.execute(walletAddress, contractAddress, msg, 
         txFee, memo, coins );

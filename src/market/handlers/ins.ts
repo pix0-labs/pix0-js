@@ -71,15 +71,15 @@ export const createSellOffer = async (sell_offer : SellOffer,
     try {
 
         let fee = await getCreateSellOfferFee(queryHandler);
-        let newFee = { amount : `${parseInt(fee.amount) * 1.2}`, denom : fee.denom} ; // try a mark up of 20%
+        //let newFee = { amount : `${parseInt(fee.amount) * 1.2}`, denom : fee.denom} ; // try a mark up of 20%
 
-        console.log("fee::", fee, "newFee::", newFee);
+        //console.log("fee::", fee, "newFee::", newFee);
         
         const msg = {
             create_sell_offer: {offer :sell_offer},
         };
 
-        const tx = await execute(msg, walletAddress, client, newFee , MARKET_CONTRACT_ADDR, "Create Sell Offer");
+        const tx = await execute(msg, walletAddress, client, fee , MARKET_CONTRACT_ADDR, "Create Sell Offer");
         return tx ; 
 
     }
