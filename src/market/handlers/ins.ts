@@ -33,7 +33,7 @@ const obtainCollectionInfo = (nft : Nft ) : SimpleCollectionInfo|undefined=>{
         let collection_info : SimpleCollectionInfo =
         JSON.parse(nft.extension.attributes?.filter(t=> {return t.trait_type === "collection-info"} )[0].value);
 
-        console.log("obtained.collection.info:",collection_info);
+        //console.log("obtained.collection.info:",collection_info);
 
         return collection_info;
     }
