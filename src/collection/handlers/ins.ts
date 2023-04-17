@@ -6,7 +6,10 @@ import { COLLECTION_CONTRACT_ADDR } from '../config';
 import { randomNumber } from '../../utils';
 import { execute, SigningClient } from '../../common/';
 import { getCreateCollectionFee, getCreateItemFee, getNftMintingFee, getSimpleMintingFee} from './query';
-
+import { obtainCollectionInfo } from '../../market/handlers/ins';
+import { SellOffer } from '../../market/models';
+import { getCreateSellOfferFee } from '../../market/handlers/query';
+import { Nft } from '../models';
 
 export const createCollection = async (collection : Collection, walletAddress : string, client : SigningClient ,
     queryHandler? : any  ) : Promise<string|Error> =>{
@@ -280,3 +283,48 @@ export const burnNft = async (token_id : string ,walletAddress : string,client :
         return e;
     }
 }
+
+
+export const createSellOfferFrom = async (param : {token_id : string, price : Coin, 
+    allowed_direct_buy : boolean,  nft : Nft, contract_addr? : string},  
+    walletAddress : string, client : SigningClient,  queryHandler? : any  ) =>{
+
+
+    let sell_offer : SellOffer = {
+        token_id : param.token_id,
+        owner : walletAddress, 
+        allowed_direct_buy : param.allowed_direct_buy,
+        price : param.price,
+        status : 0, 
+        collection_info : obtainCollectionInfo(param.nft), 
+        contract_addr : param.contract_addr ??  COLLECTION_CONTRACT_ADDR
+    };
+
+    return await createSellOffer(sell_offer, walletAddress, client, queryHandler);
+}
+
+
+export const createSellOffer = async (sell_offer : SellOffer, 
+    walletAddress : string, client : SigningClient,  queryHandler? : any  ) : Promise<string|Error> =>{
+
+    try {
+
+        let fee = await getCreateSellOfferFee(queryHandler);
+        //let newFee = { amount : `${parseInt(fee.amount) * 1.2}`, denom : fee.denom} ; // try a mark up of 20%
+
+        //console.log("fee::", fee, "newFee::", newFee);
+        
+        const msg = {
+            create_sell_offer: {offer :sell_offer},
+        };
+
+        const tx = await execute(msg, walletAddress, client, fee , COLLECTION_CONTRACT_ADDR, "Create Sell Offer");
+        return tx ; 
+
+    }
+    catch(e : any) {
+
+        return e;
+    }
+}
+
