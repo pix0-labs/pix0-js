@@ -50,7 +50,7 @@ export const execute = async (msg : any,
 
     let coins : Coin[]|undefined =  convertToCoins(fees);
 
-    console.log("converted.coins:::", coins, "txFee:", txFee);
+    //console.log("converted.coins:::", coins, "txFee:", txFee);
 
     let tx = await client.execute(walletAddress, contractAddress, msg, 
         txFee, memo, coins );
