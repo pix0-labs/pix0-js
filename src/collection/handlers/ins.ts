@@ -315,7 +315,7 @@ export const createSellOffer = async (sell_offer : SellOffer,
         //console.log("fee::", fee, "newFee::", newFee);
         
         const msg = {
-            create_sell_offer: {offer :sell_offer},
+            create_sell_offer: {offer :sell_offer, create_sell_offer_fee : fee},
         };
 
         const tx = await execute(msg, walletAddress, client, fee , COLLECTION_CONTRACT_ADDR, "Create Sell Offer");
