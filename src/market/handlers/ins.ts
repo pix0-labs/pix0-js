@@ -95,11 +95,13 @@ export const createBuyOffer = async (
 
         let fee = await getCreateBuyOfferFee(queryHandler);
 
+        let totalFee = { amount : `${fee.amount + buy_offer.price.amount}`, denom : fee.denom};
+
         const msg = {
             create_buy_offer: {buy_offer :buy_offer, sell_offer_id : sell_offer_id},
         };
 
-        const tx = await execute(msg, walletAddress, client, fee , MARKET_CONTRACT_ADDR, "Create Buy Offer");
+        const tx = await execute(msg, walletAddress, client, totalFee , MARKET_CONTRACT_ADDR, "Create Buy Offer");
         return tx ; 
 
     }
