@@ -87,7 +87,7 @@ export const getBuyOffersBy = async (
     queryHandler? : any ) :Promise<BuyOffersWithParamsResponse> =>{
 
     const _msg = {
-        get_buy_offers_of : {accepted : accepted, sell_offer_id : sell_offer_id,
+        get_buy_offers_by : {sell_offer_id : sell_offer_id, accepted : accepted, 
             start : start, limit : limit } 
     };
     
