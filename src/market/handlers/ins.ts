@@ -95,7 +95,7 @@ export const createBuyOffer = async (
 
         let fee = await getCreateBuyOfferFee(queryHandler);
 
-        let totalFee = { amount : `${fee.amount + buy_offer.price.amount}`, denom : fee.denom};
+        let totalFee = { amount : `${parseInt(fee.amount) + parseInt(buy_offer.price.amount)}`, denom : fee.denom};
 
         const msg = {
             create_buy_offer: {buy_offer :buy_offer, sell_offer_id : sell_offer_id},
