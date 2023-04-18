@@ -66,12 +66,12 @@ export const updateSellOffer = async (sell_offer : SellOffer,
 
 
 export const cancelSellOffer = async (token_id : string , 
-    walletAddress : string, client : SigningClient  ) : Promise<string|Error> =>{
+    contract_addr : string,walletAddress : string, client : SigningClient  ) : Promise<string|Error> =>{
 
     try {
 
         const msg = {
-            cancel_sell_offer: {token_id : token_id},
+            cancel_sell_offer: {token_id : token_id, contract_addr : contract_addr},
         };
 
         const tx = await execute(msg, walletAddress, client, undefined , MARKET_CONTRACT_ADDR, "Cancel Sell Offer");
@@ -134,13 +134,12 @@ export const updateBuyOffer = async (
 
 
 export const cancelBuyOffer = async (
-    sell_offer_id : string, contract_addr : string,
-    walletAddress : string, client : SigningClient ) : Promise<string|Error> =>{
+    sell_offer_id : string,walletAddress : string, client : SigningClient ) : Promise<string|Error> =>{
 
     try {
 
         const msg = {
-            cancel_buy_offer: {sell_offer_id : sell_offer_id, contract_addr : contract_addr},
+            cancel_buy_offer: {sell_offer_id : sell_offer_id},
         };
 
         const tx = await execute(msg, walletAddress, client, undefined , MARKET_CONTRACT_ADDR, "Cancel Buy Offer");
