@@ -162,7 +162,9 @@ export const cancelBuyOffer = async (
 export const acceptBuyOffer = async (
     sell_offer_id : string, 
     buy_offer_by : string, 
-    walletAddress : string, client : SigningClient ) : Promise<string|Error> =>{
+    walletAddress : string, 
+    client : SigningClient,
+    gasValue? : number  ) : Promise<string|Error> =>{
 
     try {
 
@@ -170,7 +172,8 @@ export const acceptBuyOffer = async (
             accept_buy_offer: {sell_offer_id : sell_offer_id, buy_offer_by : buy_offer_by},
         };
 
-        const tx = await execute(msg, walletAddress, client, undefined , MARKET_CONTRACT_ADDR, "Accept Buy Offer");
+        const tx = await execute(msg, walletAddress, client, undefined , 
+        MARKET_CONTRACT_ADDR, "Accept Buy Offer", gasValue);
         return tx ; 
 
     }

@@ -40,13 +40,14 @@ export const execute = async (msg : any,
     client : SigningClient, 
     fees? : Coin|Coin[]|undefined, 
     contractAddress : string = "",
-    memo? : string   ) : Promise<string|Error> =>{
+    memo? : string,
+    gasValue? : number   ) : Promise<string|Error> =>{
 
     let gasPrice :any = GasPrice.fromString('0.02' + COINS_MINIMAL_DENOM);
 
     //GasPrice.fromString('0.005' + COINS_MINIMAL_DENOM);
 
-    let txFee = calculateFee(400_000, gasPrice);
+    let txFee = calculateFee( gasValue ?? 400_000, gasPrice);
 
     let coins : Coin[]|undefined =  convertToCoins(fees);
 
