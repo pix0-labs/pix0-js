@@ -31,6 +31,8 @@ export interface CollectionIndex {
 
     number_of_sell_offers : number, 
 
+    date_created? : number, 
+
 }
 
 
