@@ -287,7 +287,7 @@ export const burnNft = async (token_id : string ,walletAddress : string,client :
 
 export const createSellOfferFrom = async (param : {token_id : string, price : Coin, 
     allowed_direct_buy : boolean,  nft : Nft, contract_addr? : string},  
-    walletAddress : string, client : SigningClient,  queryHandler? : any  ) =>{
+    walletAddress : string, client : SigningClient,  queryHandler? : any , gasValue? : number ) =>{
 
 
     let sell_offer : SellOffer = {
@@ -300,7 +300,7 @@ export const createSellOfferFrom = async (param : {token_id : string, price : Co
         contract_addr : param.contract_addr ??  COLLECTION_CONTRACT_ADDR
     };
 
-    return await createSellOffer(sell_offer, walletAddress, client, queryHandler);
+    return await createSellOffer(sell_offer, walletAddress, client, queryHandler, gasValue);
 }
 
 
