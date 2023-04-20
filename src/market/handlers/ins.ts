@@ -186,7 +186,8 @@ export const acceptBuyOffer = async (
 export const directBuy = async (
     sell_offer_id : string, 
     price : Coin, 
-    walletAddress : string, client : SigningClient ) : Promise<string|Error> =>{
+    walletAddress : string, client : SigningClient, 
+    gasValue? : number ) : Promise<string|Error> =>{
 
     try {
 
@@ -195,7 +196,7 @@ export const directBuy = async (
         };
 
 
-        const tx = await execute(msg, walletAddress, client, price , MARKET_CONTRACT_ADDR, "Direct Buy");
+        const tx = await execute(msg, walletAddress, client, price , MARKET_CONTRACT_ADDR, "Direct Buy", gasValue);
         return tx ; 
 
     }
