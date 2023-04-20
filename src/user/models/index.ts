@@ -9,6 +9,8 @@ export interface ProfileImage {
     pic_type : number,
 
     value : string , 
+
+    contract_addr? : string, 
 }
 
 export interface  Preferences {
