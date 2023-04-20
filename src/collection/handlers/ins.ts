@@ -305,20 +305,17 @@ export const createSellOfferFrom = async (param : {token_id : string, price : Co
 
 
 export const createSellOffer = async (sell_offer : SellOffer, 
-    walletAddress : string, client : SigningClient,  queryHandler? : any  ) : Promise<string|Error> =>{
+    walletAddress : string, client : SigningClient,  queryHandler? : any, gasValue? : number  ) : Promise<string|Error> =>{
 
     try {
 
         let fee = await getCreateSellOfferFee(queryHandler);
-        //let newFee = { amount : `${parseInt(fee.amount) * 1.2}`, denom : fee.denom} ; // try a mark up of 20%
-
-        //console.log("fee::", fee, "newFee::", newFee);
         
         const msg = {
             create_sell_offer: {offer :sell_offer} //, create_sell_offer_fee : fee},
         };
 
-        const tx = await execute(msg, walletAddress, client, fee , COLLECTION_CONTRACT_ADDR, "Create Sell Offer");
+        const tx = await execute(msg, walletAddress, client, fee , COLLECTION_CONTRACT_ADDR, "Create Sell Offer", gasValue);
         return tx ; 
 
     }

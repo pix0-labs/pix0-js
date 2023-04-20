@@ -47,7 +47,7 @@ export const execute = async (msg : any,
 
     //GasPrice.fromString('0.005' + COINS_MINIMAL_DENOM);
 
-    let txFee = calculateFee( gasValue ?? 400_000, gasPrice);
+    let txFee = calculateFee( gasValue ?? 300_000, gasPrice);
 
     let coins : Coin[]|undefined =  convertToCoins(fees);
 
