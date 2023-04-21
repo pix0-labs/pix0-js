@@ -83,34 +83,80 @@ export const getItemsCount = async (msg : {owner : string, collection_name : str
 }
 
 
+export const tokens = async (msg : {owner : string,  start_after? : string, limit? : number},
+    queryHandler? : any, contractAddr? : string ) :Promise<string[]> =>{
 
+    const _msg = {
+        tokens : {owner : msg.owner , 
+        start_after : msg.start_after, limit : msg.limit },
+    };
+    
+    const tok_resp = await query(_msg, queryHandler, contractAddr ?? COLLECTION_CONTRACT_ADDR);
+
+    return tok_resp.tokens;
+}
+
+/*
+For backward compatiblity, this method will be removed or deprecated soon
+*/
 export const getMintedTokensByOwner = async (msg : {owner : string,  start_after? : string, limit? : number},
-    queryHandler? : any ) :Promise<string[]> =>{
+    queryHandler? : any, contractAddr? : string ) :Promise<string[]> =>{
 
     const _msg = {
         minted_tokens_by_owner: {owner : msg.owner , 
         start_after : msg.start_after, limit : msg.limit },
     };
     
-    const tok_resp = await query(_msg, queryHandler,COLLECTION_CONTRACT_ADDR);
+    const tok_resp = await query(_msg, queryHandler, contractAddr ?? COLLECTION_CONTRACT_ADDR);
 
     return tok_resp.tokens;
 }
 
 
-
-export const getNftTokenInfo = async (token_id : string, queryHandler? : any ) :Promise<Nft> =>{
+export const tokenInfo = async (token_id : string, queryHandler? : any, contractAddr? : string  ) :Promise<Nft> =>{
 
     const msg = {
-        nft_token_info: {token_id : token_id },
+        token_info: {token_id : token_id },
     };
     
-    const tok_resp = await query(msg, queryHandler,COLLECTION_CONTRACT_ADDR);
+    const tok_resp = await query(msg, queryHandler, contractAddr ?? COLLECTION_CONTRACT_ADDR);
 
     return {token_uri : tok_resp.token_uri, extension : tok_resp.extension};
 }
 
 
+/*
+For backward compatiblity, this method will be removed or made deprecated soon
+*/
+export const getNftTokenInfo = async (token_id : string, queryHandler? : any, contractAddr? : string  ) :Promise<Nft> =>{
+
+    const msg = {
+        nft_token_info: {token_id : token_id },
+    };
+    
+    const tok_resp = await query(msg, queryHandler, contractAddr ?? COLLECTION_CONTRACT_ADDR);
+
+    return {token_uri : tok_resp.token_uri, extension : tok_resp.extension};
+}
+
+export const ownerOf = async (token_id : string, include_expired? : boolean, 
+    queryHandler? : any, contractAddr? : string  ) :Promise<string|undefined> =>{
+
+    try {
+        const msg = {
+            owner_of: {token_id : token_id, include_expired : include_expired },
+        };
+        
+        const resp = await query(msg, queryHandler, contractAddr ?? COLLECTION_CONTRACT_ADDR);
+
+        return resp.owner; // return only the owner currently
+
+    }
+    catch(e: any){
+        console.log("error:querying ownerOf:", e);
+        return undefined;
+    }
+}
 
 
 
