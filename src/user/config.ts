@@ -1,17 +1,5 @@
-export const USER_CONTRACT_ADDR = "archway1dzhsjq630dxegua26jjmr94060cepzgr6qkke4m7c6c8gmt7yp8sh9j2ew";
+export const USER_CONTRACT_ADDR = "archway152xeqy26rlgnahrwfx2y9frzyctvljaelv87e5t6pug4e2fsn5nsgyuwh5";
 
-//"archway159qv7nqydd7pv4hfgugluarrtnh2sqjm48t684rwzmeshvp65vuqwh0fq8";
+//"archway1dzhsjq630dxegua26jjmr94060cepzgr6qkke4m7c6c8gmt7yp8sh9j2ew";
 
-//"archway1r33j9w6tf6670ctc6vu2ay2m4h0vs7aluwh587yjvgn0sezskr9s7wfml7";
-
-//"archway1w3vxnehps0zjamnhlrxc7rnqqq84cd8qn3ljpzmlcp6nyq09494sswwn8t";
-
-//"archway1et0nqrj08k83nt2xh26x0n5ne7kj2eacp9w75ccx9h5h6xad05mq0x6aka";
-
-// "archway1wd7jgt8ftghwg3zw5qcdt0glzlldxnkq8635lh33ztfw2rlaj0rq3cjwzn";
-
-//"archway1epzuvyck32pkq9masydrt93akx8nfjdz04x84fddfj77cz4psapqmgkc3h";
-//"archway1346tzq4azrsk77drhhkaxm9z87lw7892g0d30lntx5mpsegud8dqyccm59";
-//"archway1tnx7e9dcdm2reyu4wqhv96j8aq65u0t0usf5k4hwg2kxxagusvjq870kjs";
-//"archway1f8ccf8j5az4wlr9r9s6za2zrfvxktkm36sddcj8cwhtyk9eupvfs55pwt8";
 
