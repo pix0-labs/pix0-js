@@ -1,10 +1,3 @@
-export const MINT_PAGE_CONTRACT_ADDR= "archway1mtu7kqy9cvk294tz78z5ecsf2gamygdtncxekyecn6v5pqwtlayqzgh5g4";
+export const MINT_PAGE_CONTRACT_ADDR= "archway1g2w2fwz2t70mts3jrcs39u9fss5q90n3ns0a8zlmp0m9yq59lwms46kqzg";
 
-//"archway1et0nqrj08k83nt2xh26x0n5ne7kj2eacp9w75ccx9h5h6xad05mq0x6aka";
-
-// "archway1wd7jgt8ftghwg3zw5qcdt0glzlldxnkq8635lh33ztfw2rlaj0rq3cjwzn";
-
-//"archway1epzuvyck32pkq9masydrt93akx8nfjdz04x84fddfj77cz4psapqmgkc3h";
-//"archway1346tzq4azrsk77drhhkaxm9z87lw7892g0d30lntx5mpsegud8dqyccm59";
-//"archway1tnx7e9dcdm2reyu4wqhv96j8aq65u0t0usf5k4hwg2kxxagusvjq870kjs";
-//"archway1f8ccf8j5az4wlr9r9s6za2zrfvxktkm36sddcj8cwhtyk9eupvfs55pwt8";
+//"archway1mtu7kqy9cvk294tz78z5ecsf2gamygdtncxekyecn6v5pqwtlayqzgh5g4";
