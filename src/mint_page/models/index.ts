@@ -1,3 +1,5 @@
+import { Attribute } from "../../collection/models";
+
 export interface MintPage {
     
      id? : string, 
@@ -10,7 +12,7 @@ export interface MintPage {
 
      description? :string,
 
-     logo_url? :string, 
+     attributes? :Attribute[], 
 
      page_template? : number ,
     

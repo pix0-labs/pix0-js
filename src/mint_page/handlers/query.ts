@@ -28,6 +28,15 @@ export const getMintPageBy = async (id : string , queryHandler? : any  ) :Promis
 }
 
 
+export const mintPageLogoUrl = ( mintPage : MintPage, logoAttributeName : string = "LOGO") : string|undefined =>{
+
+    let a = mintPage.attributes?.filter(a=> {return a.name === logoAttributeName});
+
+    let v = (a !== undefined && a.length > 0) ? a[0].value : undefined;
+    return v; 
+}
+
+
 export const getCreateMintPageFee = async (queryHandler? : any) : Promise<Coin> =>{
     return await getRequiredFee("MINT_PAGE_FEE", MINT_PAGE_CONTRACT_ADDR, queryHandler);
 }
