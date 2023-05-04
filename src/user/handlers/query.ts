@@ -1,5 +1,5 @@
 import { USER_CONTRACT_ADDR} from '../config';
-import { User  } from '../models';
+import { OutstandingRewardsResponse, User  } from '../models';
 import { query, LogInfo, getRequiredFee, 
     getLogInfo as commonLogInfo , Coin,
     getContractInfo as commonContractInfo, ContractInfo } from '../../common';
@@ -24,6 +24,18 @@ export const getUsers = async (queryHandler? : any  ) :Promise<User[]> =>{
     const res = await query(_msg, queryHandler, USER_CONTRACT_ADDR);
 
     return res.users ;
+}
+
+
+export const getOutstandingRewards = async (queryHandler? : any  ) :Promise<OutstandingRewardsResponse> =>{
+
+    const _msg = {
+        outstanding_rewards: {},
+    };
+    
+    const res = await query(_msg, queryHandler, USER_CONTRACT_ADDR);
+
+    return res;
 }
 
 

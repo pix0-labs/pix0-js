@@ -1,3 +1,5 @@
+import { Coin } from "../../common";
+
 export interface Preference {
    preference : string, 
 
@@ -46,4 +48,11 @@ export interface User {
 
     date_updated? : number,
     
+}
+
+export interface OutstandingRewardsResponse {
+
+    rewards_balance: Coin[],
+
+    total_records : number, 
 }

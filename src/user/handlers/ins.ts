@@ -83,3 +83,23 @@ export const updateUser = async ( user : User, walletAddress : string,
         return e;
     }
 }
+
+
+export const withdrawRewards = async ( walletAddress : string,
+    client : SigningClient  ) : Promise<string|Error> =>{
+
+    try {
+
+        const msg = {
+            withdraw_rewards: {}
+        };
+
+        const tx = await execute(msg, walletAddress, client, undefined , USER_CONTRACT_ADDR, "Withdraw Rewards" );
+        return tx ; 
+
+    }
+    catch(e : any) {
+
+        return e;
+    }
+}
