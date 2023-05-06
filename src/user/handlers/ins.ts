@@ -103,3 +103,25 @@ export const withdrawRewards = async ( walletAddress : string,
         return e;
     }
 }
+
+
+
+export const withdrawTokenRewards = async ( walletAddress : string,
+    client : SigningClient  ) : Promise<string|Error> =>{
+
+    try {
+
+        const msg = {
+            withdraw_token_rewards: {}
+        };
+
+        const tx = await execute(msg, walletAddress, client, undefined , USER_CONTRACT_ADDR, 
+            "Withdraw Token Rewards" );
+        return tx ; 
+
+    }
+    catch(e : any) {
+
+        return e;
+    }
+}
