@@ -86,7 +86,7 @@ export const updateUser = async ( user : User, walletAddress : string,
 
 
 export const withdrawRewards = async ( walletAddress : string,
-    client : SigningClient  ) : Promise<string|Error> =>{
+    client : SigningClient, gasValue? : number  ) : Promise<string|Error> =>{
 
     try {
 
@@ -94,7 +94,8 @@ export const withdrawRewards = async ( walletAddress : string,
             withdraw_rewards: {}
         };
 
-        const tx = await execute(msg, walletAddress, client, undefined , USER_CONTRACT_ADDR, "Withdraw Rewards" );
+        const tx = await execute(msg, walletAddress, client, undefined , USER_CONTRACT_ADDR, 
+            "Withdraw Rewards", gasValue );
         return tx ; 
 
     }
