@@ -6,13 +6,22 @@ import { query, LogInfo, getRequiredFee,
 
 export const getUser = async (owner : string , queryHandler? : any  ) :Promise<User> =>{
 
-    const _msg = {
-        get_user: {address : owner},
-    };
-    
-    const res = await query(_msg, queryHandler, USER_CONTRACT_ADDR);
+    try {
 
-    return res.user;
+        const _msg = {
+            get_user: {address : owner},
+        };
+        
+        const res = await query(_msg, queryHandler, USER_CONTRACT_ADDR);
+
+        return res.user;
+    }
+    catch(e : any ){
+
+        console.log("getUser:error::", e);
+        return {};
+
+    }
 }
 
 export const getUsers = async (queryHandler? : any  ) :Promise<User[]> =>{
