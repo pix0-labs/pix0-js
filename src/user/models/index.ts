@@ -47,6 +47,8 @@ export interface User {
     date_created? : number,
 
     date_updated? : number,
+
+    last_reward_claimed? : number, 
     
 }
 
