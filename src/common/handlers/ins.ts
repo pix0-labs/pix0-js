@@ -41,7 +41,7 @@ export const execute = async (msg : any,
     fees? : Coin|Coin[]|undefined, 
     contractAddress : string = "",
     memo? : string,
-    gasValue? : number   ) : Promise<string|Error> =>{
+    _gasValue? : number   ) : Promise<string|Error> =>{
 
     // min tx fee now is 2700 0000000 0000000aconst
     //let gasPrice :any = GasPrice.fromString('0.02' + COINS_MINIMAL_DENOM);
