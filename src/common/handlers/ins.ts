@@ -2,7 +2,7 @@ import { SigningArchwayClient } from '@archwayhq/arch3.js';
 import { SigningCosmWasmClient } from '@cosmjs/cosmwasm-stargate';
 import { DirectSecp256k1HdWallet, DirectSecp256k1HdWalletOptions } from '@cosmjs/proto-signing';
 import { calculateFee, GasPrice } from "@cosmjs/stargate";
-import { NETWORK, DENOM, COINS_MINIMAL_DENOM} from '../config';
+import { NETWORK, DENOM, COINS_MINIMAL_DENOM, PRECISION} from '../config';
 import { Coin } from '../models';
 
 
@@ -43,7 +43,10 @@ export const execute = async (msg : any,
     memo? : string,
     gasValue? : number   ) : Promise<string|Error> =>{
 
-    let gasPrice :any = GasPrice.fromString('0.02' + COINS_MINIMAL_DENOM);
+    // min tx fee now is 2700 0000000 0000000aconst
+    //let gasPrice :any = GasPrice.fromString('0.02' + COINS_MINIMAL_DENOM);
+
+    let gasPrice :any = GasPrice.fromString(`${0.027 * Math.pow(10, PRECISION)}` + COINS_MINIMAL_DENOM);
 
     //GasPrice.fromString('0.005' + COINS_MINIMAL_DENOM);
 
@@ -51,7 +54,7 @@ export const execute = async (msg : any,
 
     let coins : Coin[]|undefined =  convertToCoins(fees);
 
-    //console.log("converted.coins:::", coins, "txFee:", txFee);
+    console.log("required coins:::", coins, "txFee:", txFee, "gasPrice:", gasPrice );
 
     let tx = await client.execute(walletAddress, contractAddress, msg, 
         txFee, memo, coins );
