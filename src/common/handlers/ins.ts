@@ -1,8 +1,8 @@
 import { SigningArchwayClient } from '@archwayhq/arch3.js';
 import { SigningCosmWasmClient } from '@cosmjs/cosmwasm-stargate';
 import { DirectSecp256k1HdWallet, DirectSecp256k1HdWalletOptions } from '@cosmjs/proto-signing';
-import { calculateFee, GasPrice } from "@cosmjs/stargate";
-import { NETWORK, DENOM, COINS_MINIMAL_DENOM, PRECISION} from '../config';
+//import { /*calculateFee, */ GasPrice } from "@cosmjs/stargate";
+import { NETWORK, /* DENOM, COINS_MINIMAL_DENOM, PRECISION */} from '../config';
 import { Coin } from '../models';
 
 
@@ -63,15 +63,23 @@ export const execute = async (msg : any,
 
 }
 
-let defaultSigningClientOptions : any =  { gasPrice: `0.005${DENOM}` };
+// let defaultGasPrice :any = GasPrice.fromString(`${0.027 * Math.pow(10, PRECISION)}` + COINS_MINIMAL_DENOM);
+
+
+//let defaultSigningClientOptions : any =  { gasPrice: /*`0.005${DENOM}`*/ defaultGasPrice };
 
 export const createSigningArchwayClient = async ( wallet : DirectSecp256k1HdWallet,
     endpoint : string = NETWORK.endpoint, prefix : string = NETWORK.prefix ) : Promise<SigningArchwayClient> => {
 
+    /*
     const client = await SigningArchwayClient.connectWithSigner(endpoint, wallet, {
         ...defaultSigningClientOptions,
         prefix: prefix,
-    });
+    });*/
+
+    const client = 
+    await SigningArchwayClient.connectWithSigner(
+        NETWORK.endpoint, wallet);
 
     return client;
 }
