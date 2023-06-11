@@ -1,5 +1,13 @@
 import {StargateClient } from "@cosmjs/stargate";
-import { NETWORK } from "../config";
+import { NETWORK, COINS_MINIMAL_DENOM, PRECISION} from "../config";
+
+
+
+export const getBalanceOf = async  (address : string, client? : any )
+: Promise<{ balanceInCoin :number, balanceInUcoin : number} |undefined> =>{
+  
+    return await getAddressBalance(address, COINS_MINIMAL_DENOM, PRECISION, client);
+}
 
 export const getAddressBalance = async  (address : string, coinMinimalDenom : string,
   coinDecimals? : number, client? : any )
