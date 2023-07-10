@@ -13,7 +13,7 @@ export const walletFromMnemonic = async (mnemonic: string, options: Partial<Dire
     return wallet;
 }
 
-export type SigningClient = SigningArchwayClient | SigningCosmWasmClient;
+export type SigningClient = SigningCosmWasmClient; //SigningArchwayClient | SigningCosmWasmClient;
 
 
 const convertToCoins = (fees :Coin|Coin[]|undefined ) : Coin[] => {
